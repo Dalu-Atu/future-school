@@ -1,0 +1,52 @@
+{
+  "name": "ois",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "server": "json-server --watch data/questions.json --port 5000"
+  },
+  "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
+    "@rollup/pluginutils": "^5.1.0",
+    "@supabase/supabase-js": "^2.42.7",
+    "@tanstack/react-query": "^5.32.0",
+    "@tanstack/react-query-devtools": "^5.32.0",
+    "chart.js": "^4.4.3",
+    "i": "^0.3.7",
+    "import": "^0.0.6",
+    "json-server": "^1.0.0-alpha.23",
+    "npm": "^10.6.0",
+    "react": "^18.2.0",
+    "react-calendar": "^5.0.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.3",
+    "react-hot-toast": "^2.4.1",
+    "react-icon": "^1.0.0",
+    "react-icons": "^5.1.0",
+    "react-loading-indicators": "^0.2.3",
+    "react-router-dom": "^6.22.3",
+    "react-spinners": "^0.13.8",
+    "react-sweet-progress": "^1.1.2",
+    "recharts": "^2.12.6",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "vite": "^4.5.3",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}

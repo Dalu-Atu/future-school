@@ -1,0 +1,355 @@
+.top_header_content {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-print-color-adjust: exact;
+}
+@media print {
+  .print-container {
+    page-break-after: always;
+  }
+}
+.top_header_content .top_header_box {
+  background-color: rgb(255 255 255 / 77%);
+}
+
+.body_content {
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: top;
+  -webkit-print-color-adjust: exact;
+}
+
+.body_content .body_txt {
+  background-color: rgb(255 255 255 / 77%);
+}
+/*  body:after {
+    background: url('https://ois.portalreport.org/uploads/1671894497logo.png');
+    background-size: cover;
+    background-color: #000;
+    content: '';
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    opacity: 0.1;
+    background-repeat: no-repeat;
+    z-index: -1;
+	background-position:center;
+}*/
+.bd_table1 table#customers thead tr th {
+  height: 155px;
+  padding-bottom: 10px;
+}
+.bd_table1 table#customers thead tr th p {
+  transform: rotate(1deg);
+  text-align: left;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  background: #ffffff;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 10px 0;
+}
+
+.container {
+  width: 10%;
+  margin: 0 auto;
+  margin-top: 5rem;
+  color: #000;
+  /* margin: 3rem; */
+  /* margin-top: 2rem; */
+}
+
+p {
+  margin: 3px 0;
+}
+
+.f20 {
+  font-size: 17px;
+  line-height: 23px;
+}
+td {
+  font-size: 12px;
+}
+.f18 {
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+#customers th {
+  vertical-align: middle;
+  width: 125px;
+  text-align: center;
+  font-size: 15px;
+  writing-mode: rl-tb;
+  padding: 20px;
+}
+.f16 {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.header {
+  padding: 15px 0px;
+  border-bottom: 0px solid #000;
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: center;
+  align-items: center;
+}
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid #000000;
+}
+.logo {
+  text-align: right;
+  height: 100px;
+}
+.logo h1 {
+  margin: 0;
+  line-height: 100px;
+}
+
+.bd_title {
+  text-align: center;
+  padding: 0 5px;
+  flex: 0 0 65%;
+}
+.headrt {
+  border-left: 1px solid #000;
+  padding: 0 10px 0px 10px;
+  flex: 0 0 20%;
+}
+.headrt p {
+  margin: 3px 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+div#report_tbl > table > tbody > tr > th {
+  border: 0px;
+}
+.remarksbox table.table tbody tr th,
+.remarksbox table.table tbody tr td {
+  border: 0px;
+  padding: 0px;
+}
+
+.bd_detailssec {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px 0;
+  border-bottom: 1px solid #000;
+}
+.bd_photo {
+  flex: 0 0 15%;
+  /*border: 1px solid #000;*/
+}
+.bd_detailsarea {
+  flex: 0 0 100%;
+}
+.bd_detailsareatop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  border-bottom: 1px solid #000;
+  margin: 5px 0px;
+}
+.bd_detailsareaon {
+  flex: 1;
+}
+.bd_detailsareaon p {
+  font-weight: 600;
+  color: #06064e;
+}
+.bd_detailsareaon p span {
+  text-align: right;
+  display: inline-block;
+  width: 150px;
+  font-weight: normal;
+  margin-right: 10px;
+  color: #000;
+}
+.table td,
+.table th {
+  padding: 4px 5px;
+  background-color: transparent !important;
+}
+.table .table {
+  background-color: transparent !important;
+}
+.bd_detailsareabtm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+table#tbl_1 tbody tr th,
+table#tbl_1 tbody tr td,
+table#tbl_2 tbody tr th,
+table#tbl_2 tbody tr td,
+table#tbl_3 tbody tr th,
+table#tbl_3 tbody tr td {
+  border: solid 1px #000 !important;
+  font-size: 13px;
+}
+.remarksbox table.table {
+  font-size: 13px;
+}
+.bd_table {
+  border: 2px solid #000;
+  margin: 5px 0;
+}
+#customers {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers p,
+#customersreport p {
+  margin: 0;
+}
+#customers td,
+#customers th {
+  border: 1px solid #000;
+  padding: 5px;
+  text-align: center;
+  font-size: 13px;
+}
+table.padding-0 > tbody > tr > td {
+  border: 0 !important;
+}
+#customersreport tbody td,
+#customersreport tbody th {
+  border: 1px solid #000;
+  padding: 5px;
+  text-align: left;
+  font-size: 13px;
+}
+#customersreport thead th {
+  border: 1.5px solid #000;
+}
+#customersreport thead th p {
+  /*padding: 25px;*/
+  text-align: center;
+  font-size: 13px;
+}
+.bd_key {
+  text-align: left;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  margin-bottom: 0px;
+  margin-top: 1px;
+  padding: 10px;
+  border: solid 2px #000;
+}
+
+.twoboxse {
+  width: 48%;
+}
+.twobox .lft {
+  float: left;
+}
+.twobox .rgt {
+  float: right;
+}
+
+.bd_ftm {
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.bd_ftr {
+  border-top: 2px solid #000;
+  padding: 10px 0;
+  text-align: center;
+}
+.bdftrtop {
+  padding: 10px 0;
+}
+.bdftrtopl {
+  width: 50%;
+}
+.bdftrtopr {
+  width: 45%;
+}
+.bdftrtop span {
+  display: inline-block;
+  text-decoration: underline;
+}
+.logo img {
+  max-width: 100%;
+  height: 100%;
+}
+img.profile-photo {
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 991px) {
+  body {
+    padding: 5px 0px;
+  }
+  .bd_title {
+    padding: 5px 20px;
+    flex: 100%;
+  }
+  .headrt {
+    border-left: 0px;
+    flex: 100%;
+    text-align: center;
+  }
+  .bd_detailsareatop {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .header {
+    padding: 15px 0px;
+    display: block;
+  }
+  .logo {
+    text-align: center;
+  }
+  .bd_detailssec {
+    display: block;
+  }
+  .bd_photo {
+    min-height: 110px;
+  }
+  .bd_detailsareaon p span {
+    text-align: left;
+    width: auto;
+  }
+  .twobox .lft,
+  .twobox .rgt {
+    float: none;
+    width: 100%;
+  }
+  .bdftrtopl,
+  .bdftrtopr {
+    width: 100%;
+    text-align: center !important;
+  }
+  .container {
+    /* max-width: 100%; */
+  }
+}
+.table {
+  margin-bottom: 0px;
+}
+table#tbl_top_1 tbody tr td {
+  border: 0px;
+}
