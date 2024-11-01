@@ -5,6 +5,7 @@ import Settings from "../ui/Settings";
 import { useSettings } from "../services/settingContext";
 import { assignScores } from "../utils/helper";
 import { useEffect } from "react";
+import { Restricted } from "../features/Users/AddStudentReport";
 
 function PortalResult() {
   const settings = useSettings();
@@ -51,6 +52,11 @@ function PortalResult() {
     (student) => student.pin === matchingStudent.pin
   );
   matchingStudent = { ...result, ...matchingStudent };
+
+  if (!matchingStudent.hasAccess)
+    return (
+      <Restricted status="Please Contact the school to clear up any pending fees" />
+    );
 
   console.log(matchingStudent);
   return (
