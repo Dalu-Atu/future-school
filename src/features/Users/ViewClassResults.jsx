@@ -1,11 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import styled from 'styled-components';
-import { fetchStudents } from '../../services/schoolStudents';
-import Spinner from '../../ui/Spinner';
-import toast from 'react-hot-toast';
-import { useAuth } from '../../services/AuthContext';
-import { Restricted } from './AddStudentReport';
-import { assignScores } from '../../utils/helper';
+import { useQuery } from "@tanstack/react-query";
+import styled from "styled-components";
+import { fetchStudents } from "../../services/schoolStudents";
+import Spinner from "../../ui/Spinner";
+import toast from "react-hot-toast";
+import { useAuth } from "../../services/AuthContext";
+import { Restricted } from "./AddStudentReport";
+import { assignScores } from "../../utils/helper";
+import { useSettings } from "../../services/settingContext";
 
 const ListsProperties = styled.div`
   margin-top: 2rem;
@@ -43,6 +44,7 @@ const StudentList = styled.div`
 
 function Classresults() {
   const { user } = useAuth();
+  const settings = useSettings();
   const formTeachersClass = user?.data?.isFormTeacher?.[0] || false;
 
   const {
@@ -50,17 +52,30 @@ function Classresults() {
     isLoading: isGettingtudents,
     error,
   } = useQuery({
-    queryKey: ['stuedents results', formTeachersClass],
+    queryKey: ["stuedents results", formTeachersClass],
     queryFn: async () => await fetchStudents(formTeachersClass),
   });
 
-  const studentDetailsAndPosition = students ? assignScores(students) : [];
+  const toCamelCase = (term) => {
+    return term
+      .toLowerCase() // Convert to lowercase
+      .split(" ") // Split by space
+      .map((word, index) =>
+        index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+      ) // Capitalize first letter of each word except the first
+      .join(""); // Join back to a single string
+  };
 
+  const term = toCamelCase(settings.currentTerm);
+  const studentDetailsAndPosition = students
+    ? assignScores(students, term)
+    : [];
   if (!formTeachersClass)
     return <Restricted status="Only form teachers can view studets results!" />;
   if (isGettingtudents) return <Spinner size="medium" />;
-  if (error) return toast.error('Something went wrong. Please try again');
+  if (error) return toast.error("Something went wrong. Please try again");
 
+  console.log(studentDetailsAndPosition);
   return (
     <div>
       <ListsProperties>
@@ -71,7 +86,7 @@ function Classresults() {
       <div>
         {studentDetailsAndPosition.map((currStudent) => (
           <StudentList key={currStudent.id}>
-            <p style={{ fontSize: 'small' }}>{currStudent.name}</p>
+            <p style={{ fontSize: "small" }}>{currStudent.name}</p>
             <p>
               <b>{currStudent.totalScore}</b>
             </p>

@@ -1,8 +1,8 @@
-import React, { forwardRef } from 'react';
-import PropTypes from 'prop-types';
-import '../styles/formstyles.css';
-import { useTheme } from '../services/ThemeContext';
-import styled from 'styled-components';
+import React, { forwardRef } from "react";
+import PropTypes from "prop-types";
+import "../styles/formstyles.css";
+import { useTheme } from "../services/ThemeContext";
+import styled from "styled-components";
 
 export const SelectBox = forwardRef(
   ({ children, label, type, placeholder, value, ...rest }, ref) => {
@@ -11,8 +11,8 @@ export const SelectBox = forwardRef(
         <label>{label}</label>
         <select
           style={{
-            backgroundColor: 'var(--color-gray-100)',
-            color: 'var(--color-gray-600)',
+            backgroundColor: "var(--color-gray-100)",
+            color: "var(--color-gray-600)",
           }}
           ref={ref}
           defaultValue={value}
@@ -35,8 +35,8 @@ export const InputBox = forwardRef(
         <label>{label}</label>
         <input
           style={{
-            backgroundColor: 'var(--color-gray-100)',
-            color: 'var(--color-gray-600)',
+            backgroundColor: "var(--color-gray-100)",
+            color: "var(--color-gray-600)",
           }}
           ref={ref}
           defaultValue={value}
@@ -84,8 +84,8 @@ const SubmitButton = styled.button`
   height: 3.5rem;
   position: relative;
   top: 0rem;
-  min-width: 10rem;
-
+  min-width: 12rem;
+  width: "fit-content";
   @media (min-width: 601px) {
     align-self: flex-start;
   }
@@ -139,6 +139,6 @@ InputColumn.propTypes = {
   children: PropTypes.string.isRequired,
 };
 // Set the display name for better debugging
-InputBox.displayName = 'InputBox';
-SelectBox.displayName = 'SelectBox';
+InputBox.displayName = "InputBox";
+SelectBox.displayName = "SelectBox";
 export default NewForm;

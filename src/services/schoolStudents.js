@@ -10,8 +10,9 @@ export async function fetchStudents(clsId) {
     .select("*")
     .eq("class_id", clsId);
 
+  console.log(students);
   const formTeacher = await getFormTeacherForClass(clsId);
-  students[0].formTeacher = formTeacher;
+  if (students[0]) students[0].formTeacher = formTeacher || "";
 
   if (error) throw new Error("Error fetching students:", error.message);
   return students;

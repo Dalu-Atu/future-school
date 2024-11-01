@@ -3,7 +3,7 @@ export function addRemarksToResult(grade) {
 
   if (grade <= 30) addRemarksToResult = "POOR";
   if (grade >= 30 && grade <= 50) addRemarksToResult = "GOOD";
-  if (grade >= 50 && grade <= 70) addRemarksToResult = "VERY GOOG";
+  if (grade >= 50 && grade <= 70) addRemarksToResult = "VERY GOOD";
   if (grade >= 70) addRemarksToResult = "EXCELLENT";
   return addRemarksToResult;
 }
