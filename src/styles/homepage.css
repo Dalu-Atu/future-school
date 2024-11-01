@@ -30,7 +30,7 @@
   --white_50: hsla(0, 0%, 100%, 0.5);
   --black_50: hsla(0, 0%, 0%, 0.5);
   --black_30: hsla(0, 0%, 0%, 0.3);
-  --kappel: hsl(170, 75%, 41%);
+  --kappel: rgb(0, 0, 92);
   --white: hsl(0, 0%, 100%);
 
   /**
@@ -102,9 +102,9 @@
 *,
 *::before,
 *::after {
-  margin: 0;
+  /* margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; */
 }
 
 li {
@@ -154,15 +154,15 @@ address {
 }
 
 html {
-  font-family: var(--ff-poppins);
+  /* font-family: var(--ff-poppins);
   font-size: 10px;
-  scroll-behavior: smooth;
+  scroll-behavior: smooth; */
 }
 
 body {
-  color: var(--gray-web);
+  /* color: var(--gray-web);
   font-size: 1.6rem;
-  line-height: 1.75;
+  line-height: 1.75; */
 }
 
 :focus-visible {
@@ -200,7 +200,20 @@ body {
 .section {
   padding-block: var(--section-padding);
 }
-
+.first-sec {
+  @media (min-width: 1050px) {
+    position: relative;
+    top: -9rem;
+  }
+  @media (max-width: 1050px) {
+    position: relative;
+    top: -4rem;
+  }
+  @media (max-width: 500px) {
+    position: relative;
+    top: -0rem;
+  }
+}
 .shape {
   position: absolute;
   display: none;
@@ -332,6 +345,7 @@ body {
 
 .grid-list {
   display: grid;
+  justify-content: center;
   gap: 30px;
 }
 
@@ -354,7 +368,7 @@ body {
 
 .header {
   position: absolute;
-  top: 0;
+  top: -10px;
   left: 0;
   width: 100%;
   background-color: transparent;

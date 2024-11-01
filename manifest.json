@@ -1,0 +1,21 @@
+{
+  "name": "Oruese School",
+  "short_name": "Oruese School",
+  "description": "",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#18191a",
+  "theme_color": "#18191a",
+  "icons": [
+    {
+      "src": "./src/assets/app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./src/assets/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

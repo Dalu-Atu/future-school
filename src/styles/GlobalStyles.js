@@ -160,7 +160,7 @@ const GlobalStyles = createGlobalStyle`
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
  
 
  
@@ -195,6 +195,7 @@ body {
   line-height: 1.5;
   font-size: 1.6rem;
   background-color: var(--color-gray-200);
+  
   
   /* overflow: hidden; */
 

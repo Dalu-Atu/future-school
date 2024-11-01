@@ -84,7 +84,7 @@ const InputFields = styled.div`
 `;
 const Input = styled.input`
   width: 33rem;
-  height: 4rem;
+  height: 4.3rem;
   border-radius: 5px;
   margin-top: 10px;
   background-color: #ebebeb;

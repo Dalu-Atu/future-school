@@ -31,7 +31,7 @@ function Header() {
   const { currSettings } = useTheme();
   return (
     <header className="header" data-header="">
-      <div className="container" style={{ height: "5rem" }}>
+      <div className="container" style={{ height: "5rem", paddingTop: "1rem" }}>
         <div className="logo" style={{ display: "flex" }}>
           <img
             style={{
@@ -114,9 +114,9 @@ function FirstSection() {
   return (
     <section
       className="section hero has-bg-image"
-      style={{ backgroundImage: `url(${waves})` }}
+      style={{ backgroundImage: `url(${""})` }}
     >
-      <div className="container">
+      <div className="container first-sec">
         <div className="hero-content">
           <h1 className="h1 section-title">
             {restOfSentence} <span className="span">{lastWord}</span>
@@ -191,7 +191,7 @@ function SecondSection() {
       <div className="container ">
         <p className="section-subtitle">Categories</p>
         <h2 className="h2 section-title">
-          World-Class <span className="span">Campus Facilities</span> and
+          World-Class <span className="span">School Facilities</span> and
           Resources for Learning
         </h2>
         <p className="section-text">
@@ -373,25 +373,25 @@ function ThirdSection() {
         <div className="about-content">
           <p className="section-subtitle">About Us</p>
           <h2 className="h2 section-title">
-            Over 10 Years in <span className="span">Distant learning</span> for
+            Over 6 Years in <span className="span">Distant learning</span> for
             Skill and Academic Development
           </h2>
           <p className="section-text">
-            10+ Years of Learning Excellence. Elevating skills and academics
-            with a decade of expertise. Tailored education for your success.
+            6+ Years of Learning Excellence. Elevating skills and academics with
+            a decade of expertise. Tailored education for your success.
           </p>
           <ul className="about-list">
             <li className="about-item">
               <BsBookmarkCheck style={{ color: "red" }} />
-              <span className="span">Expert Trainers</span>
+              <span className="span">Quality Teachers</span>
             </li>
             <li className="about-item">
               <BsBookmarkCheck style={{ color: "red" }} />
-              <span className="span">Online Remote Learning</span>
+              <span className="span"> Remote Learning</span>
             </li>
             <li className="about-item">
               <BsBookmarkCheck style={{ color: "red" }} />
-              <span className="span">Lifetime Access</span>
+              <span className="span">Quality facilities</span>
             </li>
           </ul>
         </div>
@@ -404,7 +404,7 @@ function FourthSection() {
   return (
     <section aria-label="course" className="section course" id="courses">
       <div className="container">
-        <p className="section-subtitle">Popular Courses</p>
+        <p className="section-subtitle">All Courses and Subjects</p>
         <h2 className="h2 section-title">Pick A Course To Get Started</h2>
         <ul className="grid-list">
           <li>
@@ -453,11 +453,11 @@ function FourthSection() {
                 <ul className="card-meta-list">
                   <li className="card-meta-item">
                     <BsFillBookFill style={{ color: "gray" }} />
-                    <span className="span">8 Lessons</span>
+                    <span className="span">12 Week Lessons</span>
                   </li>
                   <li className="card-meta-item">
                     <BsPeople style={{ color: "gray" }} />
-                    <span className="span">120 Students</span>
+                    <span className="span">320 Students</span>
                   </li>
                 </ul>
               </div>
@@ -508,7 +508,7 @@ function FourthSection() {
                 <ul className="card-meta-list">
                   <li className="card-meta-item">
                     <BsFillBookFill style={{ color: "gray" }} />
-                    <span className="span">8 Lessons</span>
+                    <span className="span">12 Week Lessons</span>
                   </li>
                   <li className="card-meta-item">
                     <BsPeople style={{ color: "gray" }} />
@@ -563,11 +563,176 @@ function FourthSection() {
                 <ul className="card-meta-list">
                   <li className="card-meta-item">
                     <BsFillBookFill style={{ color: "gray" }} />
-                    <span className="span">8 Lessons</span>
+                    <span className="span">12 Week Lessons</span>
                   </li>
                   <li className="card-meta-item">
                     <BsPeople style={{ color: "gray" }} />
-                    <span className="span">120 Students</span>
+                    <span className="span">320 Students</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="course-card">
+              <figure
+                className="card-banner img-holder"
+                style={{
+                  "--height": "220",
+                  "--width": "370",
+                }}
+              >
+                <img
+                  alt="The Complete Camtasia Course for Content Creators"
+                  className="img-cover"
+                  height="220"
+                  loading="lazy"
+                  src={currSettings.images.image6}
+                  width="370"
+                />
+              </figure>
+              <div className="abs-badge">
+                <ion-icon aria-hidden="true" name="time-outline" />
+                <span className="span">3 Weeks</span>
+              </div>
+              <div className="card-content">
+                <span className="badge">Advanced</span>
+                <h3 className="h3">
+                  <a className="card-title" href="#">
+                    Fully Equipped Music Class
+                  </a>
+                </h3>
+                <div className="wrapper">
+                  <div className="rating-wrapper">
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                  </div>
+                  <p className="rating-text">(4.9 /7 Rating)</p>
+                </div>
+                <data className="price" value="35">
+                  Available
+                </data>
+                <ul className="card-meta-list">
+                  <li className="card-meta-item">
+                    <BsFillBookFill style={{ color: "gray" }} />
+                    <span className="span">12 Week Lessons</span>
+                  </li>
+                  <li className="card-meta-item">
+                    <BsPeople style={{ color: "gray" }} />
+                    <span className="span">320 Students</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="course-card">
+              <figure
+                className="card-banner img-holder"
+                style={{
+                  "--height": "220",
+                  "--width": "370",
+                }}
+              >
+                <img
+                  alt="The Complete Camtasia Course for Content Creators"
+                  className="img-cover"
+                  height="220"
+                  loading="lazy"
+                  src={currSettings.images.image6}
+                  width="370"
+                />
+              </figure>
+              <div className="abs-badge">
+                <ion-icon aria-hidden="true" name="time-outline" />
+                <span className="span">3 Weeks</span>
+              </div>
+              <div className="card-content">
+                <span className="badge">Advanced</span>
+                <h3 className="h3">
+                  <a className="card-title" href="#">
+                    Multilingual Class (Language Class)
+                  </a>
+                </h3>
+                <div className="wrapper">
+                  <div className="rating-wrapper">
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                  </div>
+                  <p className="rating-text">(4.9 /7 Rating)</p>
+                </div>
+                <data className="price" value="35">
+                  Available
+                </data>
+                <ul className="card-meta-list">
+                  <li className="card-meta-item">
+                    <BsFillBookFill style={{ color: "gray" }} />
+                    <span className="span">12 Week Lessons</span>
+                  </li>
+                  <li className="card-meta-item">
+                    <BsPeople style={{ color: "gray" }} />
+                    <span className="span">320 Students</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="course-card">
+              <figure
+                className="card-banner img-holder"
+                style={{
+                  "--height": "220",
+                  "--width": "370",
+                }}
+              >
+                <img
+                  alt="The Complete Camtasia Course for Content Creators"
+                  className="img-cover"
+                  height="220"
+                  loading="lazy"
+                  src={currSettings.images.image6}
+                  width="370"
+                />
+              </figure>
+              <div className="abs-badge">
+                <ion-icon aria-hidden="true" name="time-outline" />
+                <span className="span">3 Weeks</span>
+              </div>
+              <div className="card-content">
+                <span className="badge">Advanced</span>
+                <h3 className="h3">
+                  <a className="card-title" href="#">
+                    Sports Equipment
+                  </a>
+                </h3>
+                <div className="wrapper">
+                  <div className="rating-wrapper">
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                  </div>
+                  <p className="rating-text">(4.9 /7 Rating)</p>
+                </div>
+                <data className="price" value="35">
+                  Available
+                </data>
+                <ul className="card-meta-list">
+                  <li className="card-meta-item">
+                    <BsFillBookFill style={{ color: "gray" }} />
+                    <span className="span">12 Week Lessons</span>
+                  </li>
+                  <li className="card-meta-item">
+                    <BsPeople style={{ color: "gray" }} />
+                    <span className="span">320 Students</span>
                   </li>
                 </ul>
               </div>
@@ -848,7 +1013,12 @@ function Footer() {
   return (
     <footer
       className="footer"
-      style={{ color: "white", backgroundImage: `url(${footerBg})` }}
+      style={{
+        color: "white",
+        backgroundImage: `url(${footerBg})`,
+        backgroundAttachment: "none",
+        backgroundSize: "cover",
+      }}
     >
       <div className="footer-top section ">
         <div className="container grid-list " style={{ color: "lightgrey" }}>
@@ -1028,13 +1198,13 @@ function Main() {
 
 function HomePage() {
   return (
-    <div style={{ backgroundColor: "white" }}>
+    <>
       <Header />
       <main>
         <Main />
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 

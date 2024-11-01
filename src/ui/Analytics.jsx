@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import AnalyticsBox from './AnalyticsBox';
-import { useTheme } from '../services/ThemeContext';
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import AnalyticsBox from "./AnalyticsBox";
+import { useTheme } from "../services/ThemeContext";
 
 const StyledAnalytics = styled.div`
   margin: 1rem;
@@ -27,12 +27,12 @@ function Analytics({ data }) {
       <AnalyticsBox
         name={`Sec Students`}
         totalNo={data.students.secondaryStudents.length}
-        colour={secondaryColor}
+        colour={"#0369a1"}
       />
       <AnalyticsBox
         name={`All Teachers`}
         totalNo={data.teachers.length}
-        colour={primaryColor}
+        colour={"hsl(351, 83%, 61%)"}
       />
     </StyledAnalytics>
   );
