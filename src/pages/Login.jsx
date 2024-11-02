@@ -192,6 +192,7 @@ function Login() {
               <LoginLabel>Username</LoginLabel>
 
               <Input
+                type="email"
                 value={name}
                 onChange={(e) => setName(e.target.value.toLowerCase().trim())}
               />
@@ -199,6 +200,7 @@ function Login() {
               <LoginLabel>Password</LoginLabel>
 
               <Input
+                type="password"
                 value={password}
                 onChange={(e) =>
                   setPassword(e.target.value.toLowerCase().trim())

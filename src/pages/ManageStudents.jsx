@@ -304,7 +304,7 @@ function ManageStudents() {
       </StyledManagementHeader>
       <StyledContainer>
         <UserListHeader
-          pageDetail="  All Students"
+          pageDetail={`All Students : ${students.length}`}
           searchQuery={searchQuery}
           handleSearchChange={handleSearchChange}
           submit={toggleForm}
