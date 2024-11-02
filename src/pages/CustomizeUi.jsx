@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import Spinner from '../ui/Spinner';
-import { useModifySettings } from '../services/settings';
+import Spinner from "../ui/Spinner";
+import { useModifySettings } from "../services/settings";
 
-import { Link, Outlet } from 'react-router-dom';
-import { useState } from 'react';
-import { useTheme } from '../services/ThemeContext';
+import { Link, Outlet } from "react-router-dom";
+import { useState } from "react";
+import { useTheme } from "../services/ThemeContext";
 
 const PageHeader = styled.h3`
   margin: 1rem;
@@ -47,8 +47,8 @@ const SelectionList = styled(Link)`
   align-items: center;
 
   background-color: ${({ isActive, color }) =>
-    isActive ? `${color}` : 'transparent'};
-  color: ${({ isActive }) => (isActive ? 'white' : 'inherit')};
+    isActive ? `${color}` : "transparent"};
+  color: ${({ isActive }) => (isActive ? "white" : "inherit")};
   cursor: pointer;
 
   &:hover {
@@ -62,7 +62,6 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   margin-right: 2rem;
-  width: 14rem;
   height: 3rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -71,7 +70,7 @@ const StyledButton = styled.button`
   background-color: ${({ color }) => color};
   color: var(--color-gray-100);
   @media (max-width: 650px) {
-    min-width: 10rem;
+    /* min-width: 10rem; */
     font-size: small;
   }
   @media (max-width: 470px) {
@@ -90,7 +89,7 @@ const StyledButton = styled.button`
 
 function CustomizeUi() {
   const { primaryColor, currSettings } = useTheme();
-  const [activeSelection, setActiveSelection] = useState('Basic Info'); // Default active selection
+  const [activeSelection, setActiveSelection] = useState("Basic Info"); // Default active selection
   const { modifySettings, isModifying } = useModifySettings();
   function HandleUpdateSettings() {
     modifySettings(currSettings);
@@ -104,13 +103,13 @@ function CustomizeUi() {
   return (
     <StyledSettings>
       <PageHeader>Customize Ui</PageHeader>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <SettingsSelection>
-          {['Basic Info', 'Appearance', 'Edit Website'].map((selection) => (
+          {["Basic Info", "Appearance", "Edit Website"].map((selection) => (
             <SelectionList
               color={primaryColor}
               key={selection}
-              to={`/customize/${selection.toLowerCase().replace(' ', '-')}`} // Assuming you are using react-router
+              to={`/customize/${selection.toLowerCase().replace(" ", "-")}`} // Assuming you are using react-router
               isActive={activeSelection === selection}
               onClick={() => handleSelectionClick(selection)}
             >

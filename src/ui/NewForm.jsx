@@ -37,6 +37,7 @@ export const InputBox = forwardRef(
           style={{
             backgroundColor: "var(--color-gray-100)",
             color: "var(--color-gray-600)",
+            fontSize: "16px",
           }}
           ref={ref}
           defaultValue={value}
