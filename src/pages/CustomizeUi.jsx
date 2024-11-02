@@ -62,24 +62,27 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   margin-right: 2rem;
-  height: 3rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  /* height: 3rem; */
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   border-radius: 6px;
   border-style: none;
   background-color: ${({ color }) => color};
   color: var(--color-gray-100);
-  @media (max-width: 650px) {
-    /* min-width: 10rem; */
+
+  @media (max-width: 505px) {
+    min-width: 13rem;
     font-size: small;
-  }
-  @media (max-width: 470px) {
     position: relative;
-    left: -2rem;
+    right: 5rem;
+  }
+  @media (max-width: 486px) {
+    position: relative;
+    right: 7rem;
   }
   @media (max-width: 426px) {
     position: relative;
-    left: -7rem;
+    right: 20rem;
   }
   @media (max-width: 370px) {
     position: relative;
@@ -103,7 +106,12 @@ function CustomizeUi() {
   return (
     <StyledSettings>
       <PageHeader>Customize Ui</PageHeader>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <SettingsSelection>
           {["Basic Info", "Appearance", "Edit Website"].map((selection) => (
             <SelectionList
@@ -129,3 +137,5 @@ function CustomizeUi() {
 export default CustomizeUi;
 
 // all the components to be renderd in the outlet
+// 2738877740;
+// SN-WTU8-VIPD-QBO8;

@@ -82,17 +82,13 @@ const SubmitButton = styled.button`
   background-color: ${({ primaryColor }) => primaryColor};
   padding: 0rem 1rem;
   font-size: 15px;
-  height: 3.5rem;
   position: relative;
   top: 0rem;
-  min-width: 12rem;
+  width: 12rem;
   width: "fit-content";
-  @media (min-width: 601px) {
-    align-self: flex-start;
-  }
 
   @media (max-width: 600px) {
-    align-self: stretch;
+    width: 12rem;
   }
 `;
 

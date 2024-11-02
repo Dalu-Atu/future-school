@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/logoTrans.png";
 import waves from "../assets/hero-bg.svg";
 import shapeOne from "../assets/hero-shape-1.svg";
 import shapeTwo from "../assets/hero-shape-2.png";
@@ -40,14 +39,19 @@ function Header() {
               left: "-4rem",
             }}
             alt="ois logo"
-            src={currSettings.images.logo}
+            src={currSettings.images?.logo}
           />
         </div>
 
         <nav className="navbar" data-navbar="">
           <div className="wrapper">
             <div className="logo" href="#">
-              <img alt="ois logo" height="50" src={logo} width="162" />
+              <img
+                alt="ois logo"
+                height="50"
+                src={currSettings.images?.logo}
+                width="162"
+              />
             </div>
             <button>
               <BsCardChecklist />
