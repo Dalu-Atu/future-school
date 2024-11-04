@@ -48,16 +48,43 @@ export async function deleteClass(className) {
     throw new Error("Cannot delete class with students on it");
   if (error) throw new Error(" Class could not be deleted:", error?.message);
 }
-export async function updateClass(classToUpdate) {
-  const name = classToUpdate[0].previousName;
 
-  const { data, error } = await supabase
+export async function updateClass(classToUpdate) {
+  const previousName = classToUpdate[0].previousName;
+  const updatedClassData = classToUpdate[1];
+  const newClassName = updatedClassData.name;
+
+  // Step 1: Add the new class name to the "classes" table
+  const { error: addClassError } = await supabase
     .from("classes")
-    .update(classToUpdate[1])
-    .match({ name: name });
-  if (error) throw new Error(" Class could not be deleted:", error.message);
-  if (error) console.log(error);
-  return data;
+    .insert({ name: newClassName });
+
+  if (addClassError)
+    throw new Error(
+      "Could not add the new class name: " + addClassError.message
+    );
+
+  // Step 2: Update the "class_id" field for all students in the same class to the new name
+  const { error: studentsError } = await supabase
+    .from("students")
+    .update({ class_id: newClassName })
+    .eq("class_id", previousName);
+
+  if (studentsError)
+    throw new Error("Students could not be updated: " + studentsError.message);
+
+  // Step 3: Remove the old class name from the "classes" table if necessary
+  const { error: removeOldClassError } = await supabase
+    .from("classes")
+    .delete()
+    .eq("name", previousName);
+
+  if (removeOldClassError)
+    throw new Error(
+      "Old class name could not be removed: " + removeOldClassError.message
+    );
+
+  return { success: true, message: "Class and students updated successfully" };
 }
 
 export function useAddClass() {
