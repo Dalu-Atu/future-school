@@ -1,7 +1,9 @@
-import styled from 'styled-components';
-import Overview from './DashboardOverview';
-import Management from './Management';
-import '../../styles/responsive.css';
+import styled from "styled-components";
+import Overview from "./DashboardOverview";
+import Management from "./Management";
+import "../../styles/responsive.css";
+import { useEffect } from "react";
+import supabase from "../../services/supabase";
 
 const StyledDashboard = styled.div`
   margin-top: 1rem;

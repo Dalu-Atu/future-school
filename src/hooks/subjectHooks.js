@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   addAsignSubject,
   addOrUpdateAssignedSubject,
   deleteSubject,
-} from '../services/schoolsbj';
-import toast from 'react-hot-toast';
+} from "../services/schoolsbj";
+import toast from "react-hot-toast";
 
 export function useUpdateSubject(id) {
   const queryClient = useQueryClient();
@@ -13,9 +13,9 @@ export function useUpdateSubject(id) {
       addOrUpdateAssignedSubject(subjectToAssign),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['subjects', id],
+        queryKey: ["subjects", id],
       });
-      toast.success('Subject successfully updated');
+      toast.success("Subject successfully updated");
     },
     onError: (err) => toast.error(err.message),
   });
@@ -30,11 +30,11 @@ export function useAddSubject(id) {
       await addAsignSubject(subjectToAssign),
 
     onSuccess: (data) => {
-      if (!data) throw new Error('something went wrong. try again');
+      if (!data) throw new Error("something went wrong. try again");
       queryClient.invalidateQueries({
-        queryKey: ['subjects', id],
+        queryKey: ["subjects", id],
       });
-      toast.success('subject successfully updated');
+      toast.success("subject successfully updated");
     },
     onError: (err) => toast.error(err.message),
   });
@@ -49,11 +49,11 @@ export function useRemoveSubject(id) {
       mutationFn: (subjectTodelete) => deleteSubject(subjectTodelete),
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['subjects', id],
+          queryKey: ["subjects", id],
         });
         //   clearForm();
         //   setShowForm((showForm) => false);
-        toast.success('Subject deleted successfully');
+        toast.success("Subject deleted successfully");
       },
       onError: (error) => toast.error(error.message),
     });

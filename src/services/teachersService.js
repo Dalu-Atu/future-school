@@ -16,18 +16,17 @@ export async function admitUser({ data, cartegory }) {
   data.username = userName;
   data.password = password;
 
+  const { error: addingUserError } = await supabase
+    .from(cartegory)
+    .insert([data])
+    .select();
+
   const { user, error } = await supabase.auth.signUp({
     email: email,
     password: password,
   });
 
   if (error) throw new Error(error.message);
-
-  const { error: addingUserError } = await supabase
-    .from(cartegory)
-    .insert([data])
-    .select();
-
   if (addingUserError) throw new Error(addingUserError.message);
   return user;
 }

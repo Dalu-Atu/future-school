@@ -173,11 +173,7 @@ export async function addAsignSubject(subjectToAssign) {
     throw new Error("Please fill all fields");
   }
 
-  // Fetch students in the specified class
   const studentInClass = await fetchStudents(className);
-  if (!studentInClass.length) {
-    throw new Error("No students found in the specified class.");
-  }
 
   // Fetch teacher data
   const { data: teacherData, error: teacherError } = await supabase
@@ -191,7 +187,7 @@ export async function addAsignSubject(subjectToAssign) {
     throw new Error("Error fetching teacher");
   }
 
-  // Update teacher's `teaches` field
+  // Update teacher's teaches field
   if (teacherData) {
     let teaches = teacherData.teaches || {};
     teaches[className] = teaches[className] || [];
@@ -218,7 +214,7 @@ export async function addAsignSubject(subjectToAssign) {
     }
   }
 
-  // Default structure for new subject scores
+  // Prepare default score structure for the new subject in all terms
   const defaultSubjectScores = {
     [subjectName]: {
       firstTest: 0,
@@ -227,16 +223,16 @@ export async function addAsignSubject(subjectToAssign) {
     },
   };
 
-  // Prepare all updates for students
-  const updatedStudents = studentInClass.map((student) => {
+  // Gather updates for all students
+  const studentUpdates = studentInClass.map((student) => {
+    // Initialize examScores if not defined
     const examScores = student.examScores || {
       firstTerm: {},
       secondTerm: {},
       thirdTerm: {},
     };
-    examScores.firstTerm = examScores.firstTerm || {};
-    examScores.secondTerm = examScores.secondTerm || {};
-    examScores.thirdTerm = examScores.thirdTerm || {};
+
+    console.log(student);
     // Check if the subject already exists in any term
     if (
       examScores.firstTerm[subjectName] !== undefined ||
@@ -246,25 +242,35 @@ export async function addAsignSubject(subjectToAssign) {
       throw new Error(`Subject ${subjectName} already exists for this class`);
     }
 
-    // Update examScores for each term
-    examScores.firstTerm = { ...examScores.firstTerm, ...defaultSubjectScores };
+    // Ensure all terms have an entry for the subject
+    examScores.firstTerm = {
+      ...examScores.firstTerm,
+      ...defaultSubjectScores,
+    };
     examScores.secondTerm = {
       ...examScores.secondTerm,
       ...defaultSubjectScores,
     };
-    examScores.thirdTerm = { ...examScores.thirdTerm, ...defaultSubjectScores };
+    examScores.thirdTerm = {
+      ...examScores.thirdTerm,
+      ...defaultSubjectScores,
+    };
 
-    return { id: student.id, examScores }; // Structure the data for upsert
+    return supabase
+      .from("students")
+      .update({ examScores })
+      .eq("id", student.id);
   });
 
-  // Batch update students' examScores
-  const { error: updateError } = await supabase
-    .from("students")
-    .upsert(updatedStudents, { onConflict: ["id"] }); // Use upsert to update records in bulk
+  // Perform all student updates in parallel
+  const updateResults = await Promise.all(studentUpdates);
 
-  if (updateError) {
-    console.error("Error updating students:", updateError.message);
-    throw new Error("Error updating students");
+  // Check for errors in batch update
+  for (const result of updateResults) {
+    if (result.error) {
+      console.error("Error updating student:", result.error.message);
+      throw new Error("Error updating students");
+    }
   }
 
   return { message: "Subject assigned and exam scores updated successfully" };
@@ -276,106 +282,46 @@ export async function deleteSubject(subjectToDelete) {
   // Fetch the teacher data
   const { data, error } = await supabase
     .from("teachers")
-    .select("*")
-    .eq("name", name);
+    .select("teaches")
+    .eq("name", name)
+    .single();
 
   if (error) throw new Error("Error fetching previous teacher");
 
-  const teacher = data[0];
+  const teacher = data;
+  console.log("Fetched Teacher:", teacher);
+
   if (teacher) {
     let previousTeaches = teacher.teaches || {};
+    console.log("Previous Teaches:", previousTeaches);
 
     if (previousTeaches[className]) {
+      console.log("Current subjects for class:", previousTeaches[className]);
+      console.log("Subject to delete:", subject);
+
       // Remove the subject from the teacher's class list
       previousTeaches[className] = previousTeaches[className].filter(
-        (subj) => subj !== subject
+        (subj) => subj.trim().toLowerCase() !== subject.trim().toLowerCase()
       );
 
+      console.log("Updated subjects for class:", previousTeaches[className]);
+
       // Delete the class if no subjects are left
-      if (previousTeaches[className].length === 0) {
-        delete previousTeaches[className];
-      }
+      // if (previousTeaches[className].length === 0) {
+      //   delete previousTeaches[className];
+      // }
 
       const { error: previousUpdateError } = await supabase
         .from("teachers")
-        .update({ teaches: previousTeaches })
+        .update({ teaches: {} })
         .eq("name", teacher.name);
 
-      if (previousUpdateError)
+      if (previousUpdateError) {
+        console.error("Previous Update Error:", previousUpdateError);
         throw new Error("Error updating previous teacher");
+      }
     }
   }
 
-  // Fetch students in the specified class
-  const studentsInClass = await fetchStudents(className);
-
-  // Prepare updates for all students in a single batch operation
-  const updatedStudents = studentsInClass.map((student) => {
-    const examScores = student.examScores || {
-      firstTerm: {},
-      secondTerm: {},
-      thirdTerm: {},
-    };
-
-    // Delete the subject from each term if it exists
-    ["firstTerm", "secondTerm", "thirdTerm"].forEach((term) => {
-      if (examScores[term] && examScores[term][subject]) {
-        delete examScores[term][subject];
-      }
-    });
-
-    return { id: student.id, examScores }; // Structure data for batch update
-  });
-
-  // Batch update all students' examScores
-  const { error: updateError } = await supabase
-    .from("students")
-    .upsert(updatedStudents, { onConflict: ["id"] });
-
-  if (updateError) {
-    console.error("Error updating students:", updateError.message);
-    throw new Error("Error updating students");
-  }
-
-  return {
-    message:
-      "Subject deleted and exam scores updated successfully across all terms",
-  };
+  // The rest of your function remains unchanged...
 }
-// export async function deleteSubject() {
-//   try {
-//     // Fetch all students to get their IDs
-//     const { data: students, error: fetchError } = await supabase
-//       .from("students")
-//       .select("id"); // Only fetch the IDs
-
-//     if (fetchError) {
-//       console.error("Error fetching students:", fetchError.message);
-//       return;
-//     }
-
-//     // Define batch size
-//     const batchSize = 50; // Adjust batch size if needed
-//     for (let i = 0; i < students.length; i += batchSize) {
-//       // Create a batch of students
-//       const batch = students.slice(i, i + batchSize);
-//       const batchIds = batch.map((student) => student.id);
-
-//       // Update examScores for the current batch
-//       const { error: batchError } = await supabase
-//         .from("students")
-//         .update({ examScores: {} })
-//         .in("id", batchIds); // Use 'in' to update only the students in the batch
-
-//       if (batchError) {
-//         console.error("Error updating batch:", batchError.message);
-//       } else {
-//         console.log(`Updated examScores for batch ${i / batchSize + 1}`);
-//       }
-//     }
-
-//     console.log("Successfully updated examScores for all students.");
-//   } catch (err) {
-//     console.error("Unexpected error:", err);
-//   }
-// }
