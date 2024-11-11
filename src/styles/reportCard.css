@@ -10,6 +10,7 @@
 }
 
 .body_content {
+  background-image: url("../assets/logo.png");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: top;
@@ -19,23 +20,23 @@
 .body_content .body_txt {
   background-color: rgb(255 255 255 / 77%);
 }
-/*  body:after {
-    background: url('https://ois.portalreport.org/uploads/1671894497logo.png');
-    background-size: cover;
-    background-color: #000;
-    content: '';
-    height: 100vh;
-    width: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    margin: auto;
-    opacity: 0.1;
-    background-repeat: no-repeat;
-    z-index: -1;
-	background-position:center;
-}*/
+/* body:after {
+  background: url("../assets/logo.png");
+  background-size: cover;
+  background-color: #000;
+  content: "";
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  opacity: 0.1;
+  background-repeat: no-repeat;
+  z-index: -1;
+  background-position: center;
+} */
 .bd_table1 table#customers thead tr th {
   height: 155px;
   padding-bottom: 10px;
@@ -359,4 +360,11 @@ th p {
 
 #academic-report-cell {
   background-color: yellow !important;
+}
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

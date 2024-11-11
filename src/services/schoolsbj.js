@@ -142,7 +142,6 @@ export async function addOrUpdateAssignedSubject(data) {
 export async function getSubjectsInClass(className) {
   const { data, error } = await supabase.from("teachers").select("*");
   if (error) throw new Error("Error fetching teachers:", error);
-  console.log(data);
 
   const result = [];
   data.forEach((teacher) => {

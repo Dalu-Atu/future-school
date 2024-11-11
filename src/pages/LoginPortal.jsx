@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import background from "../assets/groupstudent.jpg";
+import background from "../assets/lab.jpeg";
 import { useState } from "react";
 import {
   useLoginAdmin,
@@ -158,7 +158,7 @@ function Login() {
             alt="img"
             style={{
               display: "block",
-              maxWidth: "100%",
+              width: "100%",
               height: "100%",
               backgroundSize: "cover",
             }}

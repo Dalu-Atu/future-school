@@ -9,7 +9,6 @@ import { Restricted } from "../features/Users/AddStudentReport";
 
 function PortalResult() {
   const settings = useSettings();
-  console.log(settings.currentTerm);
   const location = useLocation();
   const data = location.state;
   let result = "";
@@ -34,7 +33,6 @@ function PortalResult() {
   let matchingStudent = data.data.matchingStudent;
   const allStudents = data.data.allStudent;
 
-  console.log(matchingStudent, allStudents);
   const toCamelCase = (term) => {
     return term
       .toLowerCase() // Convert to lowercase
@@ -58,7 +56,6 @@ function PortalResult() {
       <Restricted status="Please Contact the school to clear up any pending fees" />
     );
 
-  console.log(matchingStudent);
   return (
     <>
       <Card

@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchLoggedInUser } from './apiAuth';
+import React, { createContext, useContext, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchLoggedInUser } from "./apiAuth";
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['user'],
+    queryKey: ["user"],
     queryFn: fetchLoggedInUser,
   });
 

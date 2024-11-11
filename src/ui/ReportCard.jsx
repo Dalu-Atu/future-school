@@ -8,6 +8,8 @@ import {
   addRemarksToResult,
   generateReportSummary,
 } from "../utils/helper";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 function TableRow({
   subjectName,
@@ -74,6 +76,30 @@ const Card = function ({ data, length, term, formTeacher }) {
 
   const summary = generateReportSummary(reportsData);
 
+  // useEffect(() => {
+  //   // Dynamically import Bootstrap CSS
+  //   const bootstrapLink = document.createElement("link");
+  //   bootstrapLink.href =
+  //     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+  //   bootstrapLink.rel = "stylesheet";
+  //   bootstrapLink.integrity =
+  //     "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm";
+  //   bootstrapLink.crossOrigin = "anonymous";
+  //   document.head.appendChild(bootstrapLink);
+
+  //   // Dynamically import custom CSS after Bootstrap
+  //   const customLink = document.createElement("link");
+  //   customLink.href = "../styles/reportCard.css"; // Replace with the path to your custom CSS file
+  //   customLink.rel = "stylesheet";
+  //   document.head.appendChild(customLink);
+
+  //   // Clean up on unmount
+  //   return () => {
+  //     document.head.removeChild(bootstrapLink);
+  //     document.head.removeChild(customLink);
+  //   };
+  // }, []);
+
   return (
     <>
       <div
@@ -89,6 +115,9 @@ const Card = function ({ data, length, term, formTeacher }) {
             className="top_header_content"
             style={{
               backgroundImage: `url(${background})`,
+              backgroundSize: "cover !important",
+              backgroundRepeat: "no-repeat !important",
+              backgroundPosition: "center !important",
             }}
           >
             <div className="top_header_box">
@@ -196,12 +225,7 @@ const Card = function ({ data, length, term, formTeacher }) {
             </div>
           </div>
 
-          <div
-            className="body_content"
-            style={{
-              backgroundImage: `url(${logo})`,
-            }}
-          >
+          <div className="body_content">
             <div className="body_txt">
               <div className="row">
                 <div className="col-md-12">

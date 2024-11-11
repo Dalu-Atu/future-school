@@ -10,7 +10,6 @@ export async function fetchStudents(clsId) {
     .select("*")
     .eq("class_id", clsId);
 
-  console.log(students);
   const formTeacher = await getFormTeacherForClass(clsId);
   if (students[0]) students[0].formTeacher = formTeacher || "";
 
@@ -38,7 +37,7 @@ const accessStudentResult = async (data) => {
     formTeacher: allStudent[0].formTeacher,
     count: allStudent.length,
   };
-  console.log({ matchingStudent, allStudent });
+
   return { matchingStudent, allStudent };
 };
 export function useAccessResult() {

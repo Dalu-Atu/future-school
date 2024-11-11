@@ -296,7 +296,6 @@ function ManageSubjects() {
   if (loading) return <Spinner size="medium" />;
   if (iserrorGettingTeacher) return toast.error(iserrorGettingTeacher.message);
   if (error) return toast.error(error.message);
-  console.log(subjects);
 
   return (
     <>

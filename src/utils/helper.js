@@ -93,13 +93,10 @@ function getPositionString(position) {
 }
 
 export function assignScores(students, term) {
-  console.log(students, term);
-
   students?.forEach((student) => {
     // Calculate total and add to each subject's scores
     for (const subject in student.examScores[term]) {
       const scores = student.examScores[term][subject];
-      console.log(scores);
 
       const total =
         (scores.firstTest || 0) + (scores.secondTest || 0) + (scores.exam || 0);

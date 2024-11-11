@@ -8,6 +8,7 @@ import Spinner from "./Spinner";
 import Card from "./ReportCard";
 import { useEffect } from "react";
 import { getFormTeacherForClass } from "../services/teachersService";
+import toast from "react-hot-toast";
 
 const Container = styled.div``;
 function ResultContainer() {
@@ -16,33 +17,33 @@ function ResultContainer() {
   const selectedClass = params.get("class");
   const selectedTerm = params.get("term");
 
-  useEffect(() => {
-    // Dynamically import Bootstrap CSS when this component loads
-    const link = document.createElement("link");
-    link.href =
-      "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
-    link.rel = "stylesheet";
-    link.integrity =
-      "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm";
-    link.crossOrigin = "anonymous";
-    document.head.appendChild(link);
+  // useEffect(() => {
+  //   // Dynamically import Bootstrap CSS when this component loads
+  //   const link = document.createElement("link");
+  //   link.href =
+  //     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+  //   link.rel = "stylesheet";
+  //   link.integrity =
+  //     "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm";
+  //   link.crossOrigin = "anonymous";
+  //   document.head.appendChild(link);
 
-    // Remove the Bootstrap CSS when the component unmounts
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  //   // Remove the Bootstrap CSS when the component unmounts
+  //   return () => {
+  //     document.head.removeChild(link);
+  //   };
+  // }, []);
 
   const { data: students, isLoading: isGettingStudents } = useQuery({
     queryKey: ["students", selectedClass],
     queryFn: () => fetchStudents(selectedClass),
   });
 
-  if (!selectedClass)
+  if (!selectedClass || selectedTerm === "")
     return (
       <div style={{ textAlign: "center", padding: "10rem" }}>
         <h3>Ooops....</h3>
-        <p>Please select a class</p>
+        <p>Please select a class and a Term</p>
       </div>
     );
 
@@ -57,7 +58,6 @@ function ResultContainer() {
 
   const studentResults = assignScores(students, selectedTerm);
   const studentsLength = studentResults.length;
-  console.log(studentResults);
 
   return (
     <Container>

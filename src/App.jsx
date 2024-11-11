@@ -9,7 +9,7 @@ import ClassList from "./ui/ClassList";
 import ManageActivities from "./features/Admin/ManageActivities";
 import ManageStudents from "./pages/ManageStudents";
 import ManageTeachers from "./pages/ManageTeachers";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import ManageSubjects from "./pages/ManageSubjects";
 import Managexam from "./pages/Managexam";
 import ManagePsychomotor from "./pages/ManageStudentReport";
@@ -60,24 +60,9 @@ const queryClient = new QueryClient({
 function App() {
   const isOnline = useOnlineStatus();
 
-  if (!isOnline) {
-    return (
-      <div style={{ textAlign: "center", padding: "2rem" }}>
-        <img
-          style={{
-            width: "30rem",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-          src={lostConnection}
-          alt=""
-        />
-
-        <p>Please check your network cables, modem, and router.</p>
-        <p>Reconnecting to Wi-Fi might also help.</p>
-      </div>
-    );
-  }
+  // if (!isOnline) {
+  //   toast.error("Poor Network");
+  // }
 
   return (
     <QueryClientProvider client={queryClient}>

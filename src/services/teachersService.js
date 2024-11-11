@@ -249,6 +249,6 @@ export async function getFormTeacherForClass(className) {
   if (formTeacher) return formTeacher?.name || "";
 
   // Return message if no form teacher found
-  console.log("No form teacher found for this class.");
+
   return { message: "No form teacher found for this class." };
 }

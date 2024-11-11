@@ -75,7 +75,6 @@ function Classresults() {
   if (isGettingtudents) return <Spinner size="medium" />;
   if (error) return toast.error("Something went wrong. Please try again");
 
-  console.log(studentDetailsAndPosition);
   return (
     <div>
       <ListsProperties>

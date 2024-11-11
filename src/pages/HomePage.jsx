@@ -15,6 +15,9 @@ import video from "../assets/video-bg.png";
 import blog from "../assets/blog-bg.svg";
 import blogShape from "../assets/blog-shape.png";
 import footerBg from "../assets/footer-bg.png";
+
+import one from "../assets/empress.jpeg";
+import two from "../assets/daniel.jpeg";
 import {
   BsBookmarkCheck,
   BsCardChecklist,
@@ -150,7 +153,7 @@ function FirstSection() {
               alt="hero banner"
               className="img-cover"
               height="300"
-              src={currSettings.images.image1}
+              src={one}
               width="270"
             />
           </div>
@@ -165,7 +168,7 @@ function FirstSection() {
               alt="hero banner"
               className="img-cover"
               height="370"
-              src={currSettings.images.image2}
+              src={two}
               width="240"
             />
           </div>
