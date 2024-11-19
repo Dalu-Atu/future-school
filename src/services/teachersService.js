@@ -44,97 +44,113 @@ export async function getAllTeachers() {
 export async function updateUser({ data, cartegory }) {
   const namePartsOld = data[0].name.split(" ");
   const namePartsNew = data[1].name.split(" ");
-  const oldUserName = `${
-    namePartsOld[0] + namePartsOld[1]
-  }`.toLocaleLowerCase();
 
-  const newUserName = `${
-    namePartsNew[0] + namePartsNew[1]
-  }`.toLocaleLowerCase();
+  const oldUserName = (namePartsOld[0] + namePartsOld[1]).toLocaleLowerCase();
+  const newUserName = (namePartsNew[0] + namePartsNew[1]).toLocaleLowerCase();
 
   const oldMail = `${oldUserName}@gmail.com`;
-
-  const neWMail = `${newUserName}@gmail.com`;
+  const newMail = `${newUserName}@gmail.com`;
 
   let password = data[1].password;
 
+  // Ensure password is at least 6 characters long
   if (password.length < 6) {
     const padding = "1".repeat(6 - password.length);
     password += padding;
   }
 
+  // Prepare updated data
   data[1].username = newUserName;
   data[1].password = password;
 
-  const { id: userUUIId } = await getCurrentUser(oldMail);
   const id = data[0].id;
 
-  // Update user email and password using Supabase Admin API
   try {
-    const { error: authError } = await supabase.auth.admin.updateUserById(
-      userUUIId,
-      {
-        email: neWMail,
-        password: password,
-      }
-    );
+    // Try to fetch the user from the authentication system
+    const { id: userUUIId } = await getCurrentUser(oldMail);
 
-    if (authError) {
-      throw new Error(authError.message);
+    // If user exists in the authentication system, update there
+    if (userUUIId) {
+      const { error: authError } = await supabase.auth.admin.updateUserById(
+        userUUIId,
+        {
+          email: newMail,
+          password: password,
+        }
+      );
+
+      if (authError) {
+        throw new Error(authError.message);
+      }
     }
-  } catch (error) {
-    throw new Error("Error updating user email and password:", error.message);
+  } catch (authError) {
+    // If user is not found in the authentication system, log it
+    console.warn("User not found in authentication system:", authError.message);
   }
 
-  // Update other user data in the 'teachers' table
-
-  const { data: returnedData, error } = await supabase
+  // Update the user data in the specified table
+  const { data: updatedData, error } = await supabase
     .from(cartegory)
     .update(data[1])
     .eq("id", id);
 
   if (error) throw new Error(error.message);
 
-  return returnedData;
+  return updatedData;
 }
 
 export async function deleteUser({ userToDelete, cartegory }) {
   const email = `${userToDelete.username}@gmail.com`;
 
   // Get current user details based on the email
-  const currentUser = await getCurrentUser(email);
-  if (!currentUser) throw new Error("No user found");
 
-  const userUUIId = currentUser.id;
   const teacherId = userToDelete.id; // Assuming the id in the teachers table matches the user ID
+  const currentUser = await getCurrentUser(email);
+  if (currentUser) {
+    const userUUIId = currentUser.id;
+    try {
+      const { error: authError } = await supabase.auth.admin.deleteUser(
+        userUUIId
+      );
 
-  try {
-    const { error: authError } = await supabase.auth.admin.deleteUser(
-      userUUIId
-    );
-
-    if (authError) {
-      console.error("Error deleting user from auth:", authError.message);
-      throw new Error(authError.message);
+      if (authError) {
+        console.error("Error deleting user from auth:", authError.message);
+        throw new Error(authError.message);
+      }
+    } catch (error) {
+      throw new Error("Error deleting user from auth:", error.message);
     }
-  } catch (error) {
-    throw new Error("Error deleting user from auth:", error.message);
-  }
+    try {
+      const { data, error } = await supabase
+        .from(cartegory)
+        .delete()
+        .eq("id", teacherId);
 
-  try {
-    const { data, error } = await supabase
-      .from(cartegory)
-      .delete()
-      .eq("id", teacherId);
+      if (error) {
+        console.error("Error deleting teacher data:", error.message);
+        throw new Error(error.message);
+      }
 
-    if (error) {
-      console.error("Error deleting teacher data:", error.message);
-      throw new Error(error.message);
+      return data;
+    } catch (error) {
+      throw new Error("Error deleting teacher data:", error.message);
     }
+  } else {
+    try {
+      const { data, error } = await supabase
+        .from(cartegory)
+        .delete()
+        .eq("id", teacherId);
 
-    return data;
-  } catch (error) {
-    throw new Error("Error deleting teacher data:", error.message);
+      if (error) {
+        console.error("Error deleting teacher data:", error.message);
+        throw new Error(error.message);
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error("Error deleting teacher data:", error.message);
+    }
   }
 }
 
