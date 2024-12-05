@@ -93,6 +93,8 @@ function getPositionString(position) {
 }
 
 export function assignScores(students, term) {
+  console.log(students);
+
   students?.forEach((student) => {
     // Calculate total and add to each subject's scores
     for (const subject in student.examScores[term]) {
@@ -108,7 +110,9 @@ export function assignScores(students, term) {
     student.totalScore = totalScore;
 
     // Calculate average mark for the student
-    const averageMark = calculateAverageMark(student.examScores[term]);
+    const averageMark =
+      totalScore / Object.keys(student.examScores[term]).length;
+
     student.averageMark = averageMark.toFixed(2);
   });
 
@@ -144,4 +148,73 @@ export function convertClassNames(classNames) {
   });
 
   return formattedNames.join(" and "); // Join the formatted names with 'and'
+}
+export function rearrangeSubjects(subjectsArray) {
+  // Define a priority order for subjects (all lowercase)
+  const priorityOrder = [
+    "mathematics",
+    "english studies",
+    "physics",
+    "chemistry",
+    "biology",
+    "geography",
+    "literature",
+    "basic tech",
+    "basic science",
+    "agric science",
+    "home economics",
+    "ict",
+    "number work",
+    "letter work",
+    "health habit",
+    "social habit",
+    "rhymes",
+    "penmanship",
+    "phonics",
+  ];
+
+  // Sort the array based on the defined priority order
+  const rearrangedArray = subjectsArray.sort((a, b) => {
+    // Convert subject names to lowercase for case-insensitive comparison
+    const aSubject = a.subject.toLowerCase();
+    const bSubject = b.subject.toLowerCase();
+
+    const aIndex = priorityOrder.indexOf(aSubject);
+    const bIndex = priorityOrder.indexOf(bSubject);
+
+    if (aIndex === -1 && bIndex === -1) {
+      // If neither subject is in the priority list, keep original order
+      return 0;
+    } else if (aIndex === -1) {
+      // If 'a' is not in priority list, it should come after 'b'
+      return 1;
+    } else if (bIndex === -1) {
+      // If 'b' is not in priority list, it should come after 'a'
+      return -1;
+    } else {
+      // Otherwise, compare based on their priority order
+      return aIndex - bIndex;
+    }
+  });
+
+  return rearrangedArray;
+}
+export function getStudentPerformanceComment(average) {
+  if (average >= 80 && average <= 100) {
+    return "A Remarkable and Excellent result. Keep it up.";
+  } else if (average >= 70 && average < 79) {
+    return "An Outstanding Perfomance. Keep it up.";
+  } else if (average >= 60 && average < 69) {
+    return "A brilliant perfomance. Keep it up.";
+  } else if (average >= 50 && average < 59) {
+    return "A Very Good Result.";
+  } else if (average >= 40 && average < 49) {
+    return "Pass. Put more effort next term.";
+  } else if (average >= 20 && average < 39) {
+    return "Poor Perfoment. Put more effort next term.";
+  } else if (average <= 19) {
+    return "Poor Perfoment. Put more effort next term.";
+  } else {
+    return "Invalid average score.";
+  }
 }

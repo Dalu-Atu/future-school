@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
-import Button from '../../ui/Button';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { UpdateReports } from '../../services/managexam';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Spinner from '../../ui/Spinner';
-import toast from 'react-hot-toast';
-import { fetchStudents } from '../../services/schoolStudents';
-import ScoreForm from '../../ui/ScoreForm';
+import { useEffect, useState } from "react";
+import { assignScores } from "../../utils/helper";
+import { useLocation } from "react-router-dom";
+import Button from "../../ui/Button";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import { UpdateReports } from "../../services/managexam";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Spinner from "../../ui/Spinner";
+import toast from "react-hot-toast";
+import { fetchStudents } from "../../services/schoolStudents";
+import ScoreForm from "../../ui/ScoreForm";
 
 const StyledManagexam = styled.div`
   height: calc(100vh - 58px);
@@ -57,6 +59,7 @@ const ProfileName = styled.div`
   text-align: center;
   position: relative;
   top: 3.5rem;
+  font-weight: 700;
 `;
 
 const BtnContainer = styled.div`
@@ -75,9 +78,12 @@ const SlideContainer = styled.div`
 `;
 
 function ScoreFormContainer({ selectedClass }) {
+  const location = useLocation();
   const [studentsData, setStudentsData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const queryClient = useQueryClient();
+  const params = new URLSearchParams(location.search);
+  const selectedTerm = params.get("term");
 
   const {
     data: studentToBeScored,
@@ -85,7 +91,7 @@ function ScoreFormContainer({ selectedClass }) {
     error,
   } = useQuery({
     queryKey: [selectedClass],
-    queryFn: () => fetchStudents(selectedClass), //class_id
+    queryFn: () => fetchStudents(selectedClass),
   });
 
   const { mutate: saveNewDataRecords, isPending: isSavingScores } = useMutation(
@@ -95,7 +101,7 @@ function ScoreFormContainer({ selectedClass }) {
         queryClient.invalidateQueries({
           queryKey: [selectedClass],
         });
-        toast.success('Records Successfully Added');
+        toast.success("Records Successfully Added");
       },
       onError: (err) => toast.err(err.message),
     }
@@ -103,9 +109,29 @@ function ScoreFormContainer({ selectedClass }) {
 
   useEffect(() => {
     if (studentToBeScored) {
-      const students = studentToBeScored.map((std) => {
-        return { name: std.name, reports: std.reports, image: std.image };
-      });
+      const studentsReportAndAverage = assignScores(
+        studentToBeScored,
+        selectedTerm
+      );
+
+      // const students = data
+      //   .map((std) => ({
+      //     image: std.image,
+      //     name: std.name,
+      //     [subject]: std.examScores[selectedTerm][subject],
+      //   }))
+      //   .sort((a, b) => a.name.localeCompare(b.name));
+
+      const students = studentsReportAndAverage
+        .map((std) => {
+          return {
+            name: std.name,
+            reports: std.reports,
+            image: std.image,
+            averageMark: std.averageMark,
+          };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
       setStudentsData(students);
     }
   }, [studentToBeScored]);
@@ -141,7 +167,7 @@ function ScoreFormContainer({ selectedClass }) {
   if (isGettingStd) return <Spinner size="small" />;
   if (studentToBeScored.length < 1)
     return (
-      <div style={{ textAlign: 'center', padding: '10rem' }}>
+      <div style={{ textAlign: "center", padding: "10rem" }}>
         <h3>Ooops....</h3>
         <p>There is no student in this class</p>
       </div>
@@ -154,8 +180,8 @@ function ScoreFormContainer({ selectedClass }) {
         <ManageMarks>
           <div
             style={{
-              display: 'flex',
-              transition: 'transform 0.5s ease',
+              display: "flex",
+              transition: "transform 0.5s ease",
               transform: `translateX(-${currentIndex * 360}px)`,
             }}
           >
@@ -177,7 +203,7 @@ function ScoreFormContainer({ selectedClass }) {
           <BtnContainer>
             <Button onClick={handleBack}> Back</Button>
             <Button onClick={handleNext}>
-              {currentIndex === studentToBeScored.length - 1 ? 'Save' : 'Next'}
+              {currentIndex === studentToBeScored.length - 1 ? "Save" : "Next"}
             </Button>
           </BtnContainer>
         </ManageMarks>

@@ -6,7 +6,7 @@ import svgOne from "../assets/category-1.svg";
 import svgTwo from "../assets/category-2.svg";
 import svgThree from "../assets/category-3.svg";
 import svgFour from "../assets/category-4.svg";
-import aboutShapeOne from "../assets/about-shape-1.svg";
+import musicClass from "../assets/music.jpeg";
 import aboutShapeTwo from "../assets/about-shape-2.svg";
 import aboutShapeThree from "../assets/about-shape-3.png";
 import videoShapeTwo from "../assets/video-shape-1.png";
@@ -352,14 +352,7 @@ function ThirdSection() {
               width="520"
             />
           </div>
-          <img
-            alt=""
-            className="shape about-shape-1"
-            height="420"
-            loading="lazy"
-            src={aboutShapeOne}
-            width="360"
-          />
+
           <img
             alt=""
             className="shape about-shape-2"
@@ -470,61 +463,7 @@ function FourthSection() {
               </div>
             </div>
           </li>
-          <li>
-            <div className="course-card">
-              <figure
-                className="card-banner img-holder"
-                style={{
-                  "--height": "220",
-                  "--width": "370",
-                }}
-              >
-                <img
-                  alt="Java Programming Masterclass for Software Developers"
-                  className="img-cover"
-                  height="220"
-                  loading="lazy"
-                  src={currSettings.images.image5}
-                  width="370"
-                />
-              </figure>
-              <div className="abs-badge">
-                <ion-icon aria-hidden="true" name="time-outline" />
-                <span className="span">8 Weeks</span>
-              </div>
-              <div className="card-content">
-                <span className="badge">Advanced</span>
-                <h3 className="h3">
-                  <a className="card-title" href="#">
-                    Familiar Yourself With Our Extensive Library Resources
-                  </a>
-                </h3>
-                <div className="wrapper">
-                  <div className="rating-wrapper">
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                  </div>
-                  <p className="rating-text">(4.5 /9 Rating)</p>
-                </div>
-                <data className="price" value="49">
-                  Available
-                </data>
-                <ul className="card-meta-list">
-                  <li className="card-meta-item">
-                    <BsFillBookFill style={{ color: "gray" }} />
-                    <span className="span">12 Week Lessons</span>
-                  </li>
-                  <li className="card-meta-item">
-                    <BsPeople style={{ color: "gray" }} />
-                    <span className="span">120 Students</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </li>
+
           <li>
             <div className="course-card">
               <figure
@@ -590,11 +529,66 @@ function FourthSection() {
                 }}
               >
                 <img
+                  alt="Java Programming Masterclass for Software Developers"
+                  className="img-cover"
+                  height="220"
+                  loading="lazy"
+                  src={currSettings.images.image3}
+                  width="370"
+                />
+              </figure>
+              <div className="abs-badge">
+                <ion-icon aria-hidden="true" name="time-outline" />
+                <span className="span">8 Weeks</span>
+              </div>
+              <div className="card-content">
+                <span className="badge">Advanced</span>
+                <h3 className="h3">
+                  <a className="card-title" href="#">
+                    Familiar Yourself With Our Extensive Library Resources
+                  </a>
+                </h3>
+                <div className="wrapper">
+                  <div className="rating-wrapper">
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                    <BsFillStarFill name="star" style={{ color: "gold" }} />
+                  </div>
+                  <p className="rating-text">(4.5 /9 Rating)</p>
+                </div>
+                <data className="price" value="49">
+                  Available
+                </data>
+                <ul className="card-meta-list">
+                  <li className="card-meta-item">
+                    <BsFillBookFill style={{ color: "gray" }} />
+                    <span className="span">12 Week Lessons</span>
+                  </li>
+                  <li className="card-meta-item">
+                    <BsPeople style={{ color: "gray" }} />
+                    <span className="span">120 Students</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="course-card">
+              <figure
+                className="card-banner img-holder"
+                style={{
+                  "--height": "220",
+                  "--width": "370",
+                }}
+              >
+                <img
                   alt="The Complete Camtasia Course for Content Creators"
                   className="img-cover"
                   height="220"
                   loading="lazy"
-                  src={currSettings.images.image6}
+                  src={musicClass}
                   width="370"
                 />
               </figure>
@@ -690,61 +684,6 @@ function FourthSection() {
               </div>
             </div>
           </li>
-          <li>
-            <div className="course-card">
-              <figure
-                className="card-banner img-holder"
-                style={{
-                  "--height": "220",
-                  "--width": "370",
-                }}
-              >
-                <img
-                  alt="The Complete Camtasia Course for Content Creators"
-                  className="img-cover"
-                  height="220"
-                  loading="lazy"
-                  src={currSettings.images.image6}
-                  width="370"
-                />
-              </figure>
-              <div className="abs-badge">
-                <ion-icon aria-hidden="true" name="time-outline" />
-                <span className="span">3 Weeks</span>
-              </div>
-              <div className="card-content">
-                <span className="badge">Advanced</span>
-                <h3 className="h3">
-                  <a className="card-title" href="#">
-                    Sports Equipment
-                  </a>
-                </h3>
-                <div className="wrapper">
-                  <div className="rating-wrapper">
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                    <BsFillStarFill name="star" style={{ color: "gold" }} />
-                  </div>
-                  <p className="rating-text">(4.9 /7 Rating)</p>
-                </div>
-                <data className="price" value="35">
-                  Available
-                </data>
-                <ul className="card-meta-list">
-                  <li className="card-meta-item">
-                    <BsFillBookFill style={{ color: "gray" }} />
-                    <span className="span">12 Week Lessons</span>
-                  </li>
-                  <li className="card-meta-item">
-                    <BsPeople style={{ color: "gray" }} />
-                    <span className="span">320 Students</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </li>
         </ul>
       </div>
     </section>
@@ -776,14 +715,7 @@ function FifthSection() {
               <BsFilePlay />
             </button>
           </div>
-          <img
-            alt=""
-            className="shape video-shape-1"
-            height="605"
-            loading="lazy"
-            src={videoShapeOne}
-            width="108"
-          />
+
           <img
             alt=""
             className="shape video-shape-2"

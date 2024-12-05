@@ -6,9 +6,9 @@ import { fetchStudents } from "../services/schoolStudents";
 import { useLocation } from "react-router-dom";
 import Spinner from "./Spinner";
 import Card from "./ReportCard";
-import { useEffect } from "react";
-import { getFormTeacherForClass } from "../services/teachersService";
-import toast from "react-hot-toast";
+// import { useEffect } from "react";
+// import { getFormTeacherForClass } from "../services/teachersService";
+// import toast from "react-hot-toast";
 
 const Container = styled.div``;
 function ResultContainer() {

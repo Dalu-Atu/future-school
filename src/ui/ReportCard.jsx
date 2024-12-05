@@ -1,5 +1,7 @@
 import logo from "../assets/logo.png";
 import background from "../assets/bg.png";
+import hmStamp from "../assets/hmstamp.png";
+import principalStamp from "../assets/principalstsmp.png";
 import userProfile from "../assets/user.jpg";
 import "../styles/reportCard.css";
 import { useSettings } from "../services/settingContext";
@@ -7,9 +9,128 @@ import {
   addGradeToResult,
   addRemarksToResult,
   generateReportSummary,
+  rearrangeSubjects,
 } from "../utils/helper";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+
+import React from "react";
+import styled from "styled-components";
+
+const TableContainer = styled.div`
+  display: flex;
+ justifyContent: space-evenly
+  align-items: center;
+  gap: 1rem;
+`;
+
+const Table = styled.table`
+  border-collapse: collapse;
+  width: 50%;
+  margin: 0 auto;
+`;
+
+const TableHeader = styled.th`
+  border: 1px solid #000;
+  background-color: #f4f4f4;
+  padding: 0.5rem;
+  text-align: center;
+`;
+
+const TableCell = styled.td`
+  border: 1px solid #000;
+  text-align: left;
+  padding: 0.5rem;
+`;
+
+const Comment = styled.p`
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+`;
+
+const CharacterDevelopmentTable = () => {
+  return (
+    <TableContainer>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>Character Dev (Affective Domain)</TableHeader>
+            <TableHeader>5</TableHeader>
+            <TableHeader>4</TableHeader>
+            <TableHeader>3</TableHeader>
+            <TableHeader>2</TableHeader>
+            <TableHeader>1</TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <TableCell>Attendance</TableCell>
+            <TableCell>●</TableCell>
+            <TableCell>●</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </tr>
+
+          <tr>
+            <TableCell>Handwriting</TableCell>
+            <TableCell></TableCell>
+            <TableCell>●</TableCell>
+            <TableCell>●</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </tr>
+          <tr>
+            <TableCell>Musical Skills</TableCell>
+            <TableCell>●</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </tr>
+        </tbody>
+      </Table>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>Character Dev (Affective Domain)</TableHeader>
+            <TableHeader>5</TableHeader>
+            <TableHeader>4</TableHeader>
+            <TableHeader>3</TableHeader>
+            <TableHeader>2</TableHeader>
+            <TableHeader>1</TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <TableCell>Punctuality</TableCell>
+            <TableCell>●</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </tr>
+          <tr>
+            <TableCell>Speech Fluency</TableCell>
+            <TableCell></TableCell>
+            <TableCell>●</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </tr>
+          <tr>
+            <TableCell>Sports & Games</TableCell>
+            <TableCell>●</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </tr>
+        </tbody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 function TableRow({
   subjectName,
@@ -48,6 +169,17 @@ function TableRow({
 
 const Card = function ({ data, length, term, formTeacher }) {
   const settings = useSettings();
+  // console.log(settings);
+
+  const getAuthorityOutput = (
+    className,
+    principalOutput,
+    headmistressOutput
+  ) => {
+    return className.startsWith("JSS") || className.startsWith("SS")
+      ? principalOutput
+      : headmistressOutput;
+  };
 
   const {
     name,
@@ -59,6 +191,7 @@ const Card = function ({ data, length, term, formTeacher }) {
     totalScore: marksObtained,
     position,
   } = data;
+  console.log(reports);
 
   const totalMark = Object.keys(examScores[term]).length * 100;
 
@@ -68,6 +201,8 @@ const Card = function ({ data, length, term, formTeacher }) {
       scores,
     })
   );
+  const sortedSubjects = rearrangeSubjects(scoresArray);
+  // console.log(sortedSubjects);
 
   const reportsData = Object.entries(reports).map(([report, value]) => ({
     report,
@@ -103,6 +238,11 @@ const Card = function ({ data, length, term, formTeacher }) {
   return (
     <>
       <div
+        style={{
+          border: "1px solid white",
+
+          minHeight: "100vh",
+        }}
         className="cont"
         data-new-gr-c-s-check-loaded="14.1202.0"
         data-gr-ext-installed=""
@@ -284,11 +424,13 @@ const Card = function ({ data, length, term, formTeacher }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {scoresArray.map((sbjScore) => {
+                        {sortedSubjects.map((sbjScore) => {
                           return (
                             <TableRow
                               key={sbjScore.subject}
-                              subjectName={sbjScore.subject || ""}
+                              subjectName={
+                                sbjScore.subject?.toUpperCase() || ""
+                              }
                               firstTest={sbjScore.scores.firstTest || 0}
                               secondTest={sbjScore.scores.secondTest || 0}
                               exam={sbjScore.scores.exam || 0}
@@ -398,36 +540,94 @@ const Card = function ({ data, length, term, formTeacher }) {
                       </tbody>
                     </table>
                   </div>
+                  <CharacterDevelopmentTable />
                 </div>
               </div>
 
-              <div className="remarksbox" style={{ padding: "10px 0" }}>
+              <div className="remarksbox" style={{ padding: "20px 0" }}>
                 <table className="table">
                   <tbody>
-                    <tr>
+                    <tr
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <th>
                         <p>CLASS TEACHERS REMARK</p>
                       </th>
                       <td colSpan={2}>{reports.remarks}</td>
                     </tr>
-                    <tr>
+                    <tr
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <th>
-                        <p>PRINCIPALS REMARK</p>
+                        <p>
+                          {getAuthorityOutput(
+                            class_id,
+                            "PRINCIPAL'S REMARK",
+                            "HEADMISTRESS REMARK"
+                          )}
+                        </p>
                       </th>
                       <td colSpan={2}>
-                        <td colSpan="2">{reports.principalRemarks}</td>
+                        <td colSpan={2}>{reports.principalRemarks}</td>
+                      </td>
+                    </tr>
+                    <tr
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <th>
+                        <p>
+                          {getAuthorityOutput(
+                            class_id,
+                            "PRINCIPAL'S NAME",
+                            "HEADMISTRESS NAME"
+                          )}
+                        </p>
+                      </th>
+                      <td colSpan={2}>
+                        <td colSpan={2}>
+                          {getAuthorityOutput(
+                            class_id,
+                            settings.principalsName,
+                            settings.headMistressName
+                          )}
+                        </td>
                       </td>
                     </tr>
                     <tr>
-                      <th>
-                        <p>PRINCIPALS NAME</p>
-                        <br />
-                        <p>SCHOOL RESUMES</p>
-                        <p>{settings.resumptionDate}</p>
-                      </th>
-                      <td> {settings.principalsName}</td>
-                      <td style={{ textAlign: "right" }}>
-                        <img src={settings.images.stamp} width={200} />
+                      <h3>
+                        <b>SCHOOL RESUMES</b>
+                        <h4 style={{ position: "relative", left: "30px" }}>
+                          {settings.resumptionDate}
+                        </h4>
+                      </h3>
+                      <td
+                        style={{
+                          textAlign: "right",
+                          position: "relative",
+                          left: "7rem",
+                          top: "-9rem",
+                        }}
+                      >
+                        <img
+                          src={getAuthorityOutput(
+                            class_id,
+                            principalStamp,
+                            hmStamp
+                          )}
+                          width={200}
+                        />
                       </td>
                     </tr>
                   </tbody>

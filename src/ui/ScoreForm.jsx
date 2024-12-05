@@ -1,8 +1,9 @@
-import { Input, Label, Select } from './Form';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { Input, Label, Select } from "./Form";
+import { useState } from "react";
+import { useEffect } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { getStudentPerformanceComment } from "../utils/helper";
 
 export const StyledMangeMarksForm = styled.form`
   margin-left: auto;
@@ -25,25 +26,28 @@ function ScoreForm({ formData, onInputChange }) {
   const [creativity, setCreativity] = useState(reports?.creativity);
   const [present, setPresent] = useState(reports?.present);
   const [absent, setAbsent] = useState(reports?.absent);
-  const [remarks, setRemarks] = useState(reports?.remarks || '');
+  const [remarks, setRemarks] = useState(reports?.remarks || "");
   const [principalRemarks, setPrincipalRemark] = useState(
-    reports?.principalRemarks || ''
+    reports?.principalRemarks || ""
   );
 
   useEffect(
     function () {
+      const comment = getStudentPerformanceComment(formData.averageMark);
       setPoliteness(politeness || 0);
       setNeatness(neatness || 0);
       setaAttentiveness(attentiveness || 0);
       setCreativity(creativity || 0);
       setPresent(present || 0);
       setAbsent(absent || 0);
-      setRemarks(remarks || '');
-      setPrincipalRemark(principalRemarks || '');
-    },
-    [onInputChange]
-  );
+      setRemarks(remarks || "");
 
+      // Update principal remark and trigger the input change handler
+      setPrincipalRemark(comment);
+      onInputChange({ target: { name: "principalRemarks", value: comment } });
+    },
+    [formData.averageMark]
+  );
   return (
     <StyledMangeMarksForm>
       <div>
@@ -132,7 +136,7 @@ function ScoreForm({ formData, onInputChange }) {
         />
       </div>
       <div>
-        <Label>Remarks</Label>
+        <Label>Teacher Remarks</Label>
         <br />
         <Input defaultValue={remarks} onChange={onInputChange} name="remarks" />
       </div>
@@ -141,7 +145,7 @@ function ScoreForm({ formData, onInputChange }) {
         <br />
         <Input
           defaultValue={principalRemarks}
-          onChange={onInputChange}
+          value={principalRemarks}
           name="principalRemarks"
         />
       </div>

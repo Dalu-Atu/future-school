@@ -7,39 +7,48 @@ import { useAuth } from "../../services/AuthContext";
 import { Restricted } from "./AddStudentReport";
 import { assignScores } from "../../utils/helper";
 import { useSettings } from "../../services/settingContext";
-
 const ListsProperties = styled.div`
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 3rem;
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin: 3rem 1.5rem 0 1.5rem;
+  padding: 10px;
   color: var(--color-white);
   background-color: #34d399;
-  font-weight: 600;
+  font-weight: 700;
   word-spacing: 2px;
   border-radius: 3px;
+
+  p {
+    flex: 1; /* Make each field equally wide */
+    text-align: center;
+    font-size: 1.4rem; /* Adjust font size for better fit */
+  }
 `;
+
 const StudentList = styled.div`
   display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
   justify-content: space-between;
   align-items: center;
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-  align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 2rem;
-  background-color: var(--color-gray-100);
+  margin: 1rem 1.5rem;
   padding: 10px;
+  background-color: var(--color-gray-100);
   border-radius: 5px;
   box-shadow: 2px 2px 3px var(--color-gray-300);
-  /* color: gray; */
+
+  p {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 768px) {
+    p {
+      font-size: 1, 2rem; /* Adjust font size for smaller screens */
+    }
+  }
 `;
 
 function Classresults() {
@@ -70,30 +79,40 @@ function Classresults() {
   const studentDetailsAndPosition = students
     ? assignScores(students, term)
     : [];
+
   if (!formTeachersClass)
     return <Restricted status="Only form teachers can view studets results!" />;
   if (isGettingtudents) return <Spinner size="medium" />;
   if (error) return toast.error("Something went wrong. Please try again");
+  console.log(studentDetailsAndPosition);
 
   return (
-    <div>
+    <div style={{ paddingBottom: "7rem" }}>
       <ListsProperties>
         <p>Names</p>
         <p>Total Scores</p>
+        <p>Average</p>
         <p>Positions</p>
       </ListsProperties>
       <div>
-        {studentDetailsAndPosition.map((currStudent) => (
-          <StudentList key={currStudent.id}>
-            <p style={{ fontSize: "small" }}>{currStudent.name}</p>
-            <p>
-              <b>{currStudent.totalScore}</b>
-            </p>
-            <p>
-              <b>{currStudent.position}</b>
-            </p>
-          </StudentList>
-        ))}
+        {studentDetailsAndPosition.map((currStudent) => {
+          return (
+            <StudentList key={currStudent.id}>
+              <p style={{ fontSize: "small" }}>{currStudent.name}</p>
+              <p>
+                <b>{currStudent.totalScore}</b>
+              </p>
+              <p>
+                <b>{currStudent.averageMark}</b>
+              </p>
+              <p>
+                <b style={{ color: "#34d399", fontWeight: "1000" }}>
+                  {currStudent.position}
+                </b>
+              </p>
+            </StudentList>
+          );
+        })}
       </div>
     </div>
   );
