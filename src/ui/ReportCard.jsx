@@ -261,10 +261,10 @@ const Card = function ({ data, length, term, formTeacher }) {
                             Subject
                           </th>
                           <th scope="col">
-                            <p>1ST TEST (15 MARKS)</p>
+                            <p>1ST TEST (20 MARKS)</p>
                           </th>
                           <th scope="col">
-                            <p>2ND TEST (15 MARKS)</p>
+                            <p>2ND TEST (20 MARKS)</p>
                           </th>
                           <th scope="col">
                             <p>Exam</p>
