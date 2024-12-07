@@ -53,7 +53,7 @@ function PortalResult() {
 
   if (!matchingStudent.hasAccess)
     return (
-      <Restricted status="Please Contact the school to clear up any pending fees" />
+      <Restricted status="Result not available for now. Contact the school" />
     );
 
   return (

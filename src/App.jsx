@@ -53,6 +53,7 @@ const queryClient = new QueryClient({
     queries: {
       startTime: 0,
       refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   },
 });

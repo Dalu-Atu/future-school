@@ -80,7 +80,7 @@ const Label = styled.div`
 
   margin: 1rem auto;
   border: 1px solid lightgray;
-  padding-left: 1rem;
+  padding-left: 0rem;
 `;
 
 const Paragraph = styled.span`

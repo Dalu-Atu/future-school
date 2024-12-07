@@ -26,8 +26,10 @@ function StatisticChart({ data }) {
     { name: "JSS 2", uv: 3000, pv: 1398, amt: 2210, class: 20 },
     { name: "JSS 3", uv: 2000, pv: 9800, amt: 2290, class: 50 },
     { name: "SS 1", uv: 2780, pv: 3908, amt: 2000, class: 20 },
-    { name: "SS 2", uv: 1890, pv: 4800, amt: 2181, class: 18 },
-    { name: "SS 3", uv: 2390, pv: 3800, amt: 2500, class: 70 },
+    { name: "SS 2 ART", uv: 1890, pv: 4800, amt: 2181, class: 18 },
+    { name: "SS 2 SCI", uv: 1890, pv: 4800, amt: 2181, class: 18 },
+    { name: "SS 3 ART", uv: 2390, pv: 3800, amt: 2500, class: 70 },
+    { name: "SS 3 SCI", uv: 2390, pv: 3800, amt: 2500, class: 70 },
   ];
 
   const countStudentsByClass = (students) => {
@@ -60,7 +62,7 @@ function StatisticChart({ data }) {
   const { primaryColor } = useTheme();
   return (
     <StyledStatisticsChart>
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", fontSize: "small" }}>
         <h4 style={{ color: "#7f7f7f" }}>Statistics</h4>
         <ResponsiveContainer
           width="115%"

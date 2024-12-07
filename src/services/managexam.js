@@ -84,38 +84,47 @@ export async function UpdateMarks(
 }
 
 export async function UpdateReports(reports, stdClass) {
-  const { data: allStudents, error } = await supabase
-    .from("students")
-    .select("*")
-    .eq("class_id", stdClass);
+  try {
+    // Fetch all students in the class
+    const { data: allStudents, error } = await supabase
+      .from("students")
+      .select("*")
+      .eq("class_id", stdClass);
 
-  if (error) console.log("Error fetching students:", error.message);
+    if (error) throw new Error(`Error fetching students: ${error.message}`);
 
-  allStudents.map(async (currStudent) => {
-    const newReport = reports.find(
-      (student) => student.name === currStudent.name
-    );
+    // Iterate through students and update their reports
+    const results = [];
+    for (const currStudent of allStudents) {
+      const newReport = reports.find(
+        (student) => student.name === currStudent.name
+      );
 
-    if (newReport) {
-      // Merge the updated marks with the existing exam scores
-      const updatedReport = newReport.reports;
+      if (newReport) {
+        const updatedReport = newReport.reports;
 
-      // Update only the examScores field for the current student
-      const { data: updatedStudentData, error: updateError } = await supabase
-        .from("students")
-        .update({ reports: updatedReport })
-        .eq("name", currStudent.name)
-        .eq("class_id", stdClass);
+        const { data: updatedStudentData, error: updateError } = await supabase
+          .from("students")
+          .update({ reports: updatedReport })
+          .eq("name", currStudent.name)
+          .eq("class_id", stdClass);
 
-      if (updateError) {
-        throw new Error("Error updating student:", updateError.message);
+        if (updateError) {
+          console.error(
+            `Error updating report for ${currStudent.name}: ${updateError.message}`
+          );
+        } else {
+          results.push(updatedStudentData);
+        }
+      } else {
+        console.warn(`No updated marks found for student: ${currStudent.name}`);
       }
-
-      return updatedStudentData;
-    } else {
-      throw new Error("No updated marks found for student:", currStudent.name);
     }
-  });
 
-  // Filter out any null results
+    // Return the results of all updates
+    return results;
+  } catch (err) {
+    console.error("Error in UpdateReports:", err.message);
+    throw err;
+  }
 }
