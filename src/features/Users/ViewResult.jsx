@@ -1,12 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchStudents } from '../../services/schoolStudents';
-import Results from '../../ui/Results';
-import { assignScores } from '../../utils/helper';
+import { useQuery } from "@tanstack/react-query";
+import { fetchStudents } from "../../services/schoolStudents";
+import Results from "../../ui/Results";
+import { assignScores } from "../../utils/helper";
 
-import Spinner from '../../ui/Spinner';
-import { useAuth } from '../../services/AuthContext';
-import { getCurrentUser } from '../../services/apiAuth';
-import { Restricted } from './AddStudentReport';
+import Spinner from "../../ui/Spinner";
+import { useAuth } from "../../services/AuthContext";
+import { getCurrentUser } from "../../services/apiAuth";
+import { Restricted } from "./AddStudentReport";
 
 function ViewResult() {
   const { user } = useAuth();
@@ -14,7 +14,7 @@ function ViewResult() {
   const selectedClass = currentStudent.class_id;
 
   const { data: students, isLoading: isGettingStudents } = useQuery({
-    queryKey: ['student result', selectedClass],
+    queryKey: ["student result", selectedClass],
     queryFn: () => fetchStudents(selectedClass),
   });
 
@@ -28,9 +28,7 @@ function ViewResult() {
   );
 
   if (!currentStudentResult.hasAccess)
-    return (
-      <Restricted status="Please contact your form teacher to clear up pending fees" />
-    );
+    return <Restricted status="Result is not out yet." />;
 
   return (
     <div>

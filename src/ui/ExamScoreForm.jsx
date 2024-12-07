@@ -10,6 +10,8 @@ import {
 } from "../services/managexam";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Spinner from "./Spinner";
+import SpinnerMini from "./SpinnerMini";
+
 import toast from "react-hot-toast";
 
 const StyledManagexam = styled.div`
@@ -157,7 +159,7 @@ function ExamScoreForm({ selectedClass, selectedSubject, selectedTerm }) {
     setStudentsData(updatedStudentsData);
   };
 
-  if (isSavingScores || isGettingStd) return <Spinner size="medium" />;
+  if (isGettingStd) return <Spinner size="medium" />;
   if (error) return toast.error(error.message);
 
   return (
@@ -194,8 +196,17 @@ function ExamScoreForm({ selectedClass, selectedSubject, selectedTerm }) {
           </div>
           <BtnContainer>
             <Button onClick={handleBack}> Back</Button>
-            <Button onClick={handleNext}>
-              {currentIndex === studentToBeScored.length - 1 ? "Save" : "Next"}
+            <Button onClick={handleNext} disabled={isSavingScores}>
+              {isSavingScores ? (
+                <>
+                  <SpinnerMini />
+                  <span style={{ marginLeft: "5px" }}>Saving...</span>
+                </>
+              ) : currentIndex === studentToBeScored.length - 1 ? (
+                "Save"
+              ) : (
+                "Next"
+              )}
             </Button>
           </BtnContainer>
         </ManageMarks>

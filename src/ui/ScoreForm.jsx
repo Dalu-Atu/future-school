@@ -22,32 +22,30 @@ function ScoreForm({ formData, onInputChange }) {
 
   const [politeness, setPoliteness] = useState(reports?.politeness || 0);
   const [neatness, setNeatness] = useState(reports?.neatness || 0);
-  const [attentiveness, setaAttentiveness] = useState(reports?.attentiveness);
-  const [creativity, setCreativity] = useState(reports?.creativity);
-  const [present, setPresent] = useState(reports?.present);
-  const [absent, setAbsent] = useState(reports?.absent);
+  const [attentiveness, setAttentiveness] = useState(
+    reports?.attentiveness || 0
+  );
+  const [creativity, setCreativity] = useState(reports?.creativity || 0);
+  const [present, setPresent] = useState(reports?.present || 0);
+  const [absent, setAbsent] = useState(124 - (reports?.present || 0));
   const [remarks, setRemarks] = useState(reports?.remarks || "");
   const [principalRemarks, setPrincipalRemark] = useState(
     reports?.principalRemarks || ""
   );
 
-  useEffect(
-    function () {
-      const comment = getStudentPerformanceComment(formData.averageMark);
-      setPoliteness(politeness || 0);
-      setNeatness(neatness || 0);
-      setaAttentiveness(attentiveness || 0);
-      setCreativity(creativity || 0);
-      setPresent(present || 0);
-      setAbsent(absent || 0);
-      setRemarks(remarks || "");
+  // Automatically update absent when present changes
+  useEffect(() => {
+    const newAbsent = 124 - present;
+    setAbsent(newAbsent);
+    onInputChange({ target: { name: "absent", value: newAbsent } });
+  }, [present]);
 
-      // Update principal remark and trigger the input change handler
-      setPrincipalRemark(comment);
-      onInputChange({ target: { name: "principalRemarks", value: comment } });
-    },
-    [formData.averageMark]
-  );
+  useEffect(() => {
+    const comment = getStudentPerformanceComment(formData.averageMark);
+    setPrincipalRemark(comment);
+    onInputChange({ target: { name: "principalRemarks", value: comment } });
+  }, []);
+
   return (
     <StyledMangeMarksForm>
       <div>
@@ -59,11 +57,11 @@ function ScoreForm({ formData, onInputChange }) {
           type="number"
           name="politeness"
         >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          {[1, 2, 3, 4, 5].map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
         </Select>
       </div>
       <div>
@@ -71,32 +69,31 @@ function ScoreForm({ formData, onInputChange }) {
         <br />
         <Select
           defaultValue={neatness}
-          type="number"
           onChange={onInputChange}
+          type="number"
           name="neatness"
         >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          {[1, 2, 3, 4, 5].map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
         </Select>
       </div>
-
       <div>
         <Label>Attentiveness</Label>
         <br />
         <Select
           defaultValue={attentiveness}
-          type="number"
           onChange={onInputChange}
+          type="number"
           name="attentiveness"
         >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          {[1, 2, 3, 4, 5].map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
         </Select>
       </div>
       <div>
@@ -104,36 +101,37 @@ function ScoreForm({ formData, onInputChange }) {
         <br />
         <Select
           defaultValue={creativity}
-          type="number"
           onChange={onInputChange}
+          type="number"
           name="creativity"
         >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          {[1, 2, 3, 4, 5].map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
         </Select>
       </div>
       <div>
-        <Label>No. of time present</Label>
+        <Label>No. of times present</Label>
         <br />
         <Input
           defaultValue={present}
           type="number"
-          onChange={onInputChange}
+          onChange={(e) => {
+            const sanitizedValue = e.target.value.replace(/^0+/, "") || "0";
+            setPresent(parseInt(sanitizedValue, 10));
+            onInputChange({
+              target: { name: "present", value: sanitizedValue },
+            });
+          }}
           name="present"
         />
       </div>
       <div>
-        <Label>No. of time absent</Label>
+        <Label>No. of times absent</Label>
         <br />
-        <Input
-          defaultValue={absent}
-          type="number"
-          onChange={onInputChange}
-          name="absent"
-        />
+        <Input value={absent} />
       </div>
       <div>
         <Label>Teacher Remarks</Label>
@@ -144,8 +142,8 @@ function ScoreForm({ formData, onInputChange }) {
         <Label>Principal Remarks</Label>
         <br />
         <Input
+          onChange={onInputChange}
           defaultValue={principalRemarks}
-          value={principalRemarks}
           name="principalRemarks"
         />
       </div>

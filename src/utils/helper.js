@@ -93,30 +93,35 @@ function getPositionString(position) {
 }
 
 export function assignScores(students, term) {
-  console.log(students);
+  if (!students || !Array.isArray(students)) return [];
 
-  students?.forEach((student) => {
-    // Calculate total and add to each subject's scores
+  students.forEach((student) => {
+    if (!student.examScores || !student.examScores[term]) {
+      console.warn(`Invalid exam scores for student: ${student.name}`);
+      student.totalScore = 0;
+      student.averageMark = "0.00";
+      return;
+    }
+
+    // Calculate total for each subject
     for (const subject in student.examScores[term]) {
-      const scores = student.examScores[term][subject];
-
+      const scores = student.examScores[term][subject] || {};
       const total =
         (scores.firstTest || 0) + (scores.secondTest || 0) + (scores.exam || 0);
       scores.total = total;
     }
 
-    // Calculate total score for the student
-    const totalScore = calculateTotalScore(student.examScores[term]);
+    // Calculate total and average scores
+    const totalScore = calculateTotalScore(student.examScores[term]) || 0;
     student.totalScore = totalScore;
 
-    // Calculate average mark for the student
     const averageMark =
-      totalScore / Object.keys(student.examScores[term]).length;
+      totalScore / Object.keys(student.examScores[term]).length || 0;
 
     student.averageMark = averageMark.toFixed(2);
   });
 
-  // Sort students by total score in descending order
+  // Sort students by total score
   const sortedStudents = students
     .slice()
     .sort((a, b) => b.totalScore - a.totalScore);

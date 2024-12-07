@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { assignScores } from "../../utils/helper";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -10,6 +10,7 @@ import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
 import { fetchStudents } from "../../services/schoolStudents";
 import ScoreForm from "../../ui/ScoreForm";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 const StyledManagexam = styled.div`
   height: calc(100vh - 58px);
@@ -79,6 +80,7 @@ const SlideContainer = styled.div`
 
 function ScoreFormContainer({ selectedClass }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [studentsData, setStudentsData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const queryClient = useQueryClient();
@@ -102,36 +104,29 @@ function ScoreFormContainer({ selectedClass }) {
           queryKey: [selectedClass],
         });
         toast.success("Records Successfully Added");
+        navigate(-1);
       },
       onError: (err) => toast.err(err.message),
     }
   );
+  console.log(studentToBeScored);
 
   useEffect(() => {
-    if (studentToBeScored) {
+    if (studentToBeScored?.length > 1) {
       const studentsReportAndAverage = assignScores(
         studentToBeScored,
         selectedTerm
       );
 
-      // const students = data
-      //   .map((std) => ({
-      //     image: std.image,
-      //     name: std.name,
-      //     [subject]: std.examScores[selectedTerm][subject],
-      //   }))
-      //   .sort((a, b) => a.name.localeCompare(b.name));
-
       const students = studentsReportAndAverage
-        .map((std) => {
-          return {
-            name: std.name,
-            reports: std.reports,
-            image: std.image,
-            averageMark: std.averageMark,
-          };
-        })
+        .map((std) => ({
+          name: std.name,
+          reports: std.reports,
+          image: std.image,
+          averageMark: std.averageMark,
+        }))
         .sort((a, b) => a.name.localeCompare(b.name));
+
       setStudentsData(students);
     }
   }, [studentToBeScored]);
@@ -163,7 +158,7 @@ function ScoreFormContainer({ selectedClass }) {
     setStudentsData(updatedStudentsData);
   };
 
-  if (isSavingScores) return <Spinner size="small" />;
+  // if (isSavingScores) return <Spinner size="small" />;
   if (isGettingStd) return <Spinner size="small" />;
   if (studentToBeScored.length < 1)
     return (
@@ -202,8 +197,17 @@ function ScoreFormContainer({ selectedClass }) {
           </div>
           <BtnContainer>
             <Button onClick={handleBack}> Back</Button>
-            <Button onClick={handleNext}>
-              {currentIndex === studentToBeScored.length - 1 ? "Save" : "Next"}
+            <Button onClick={handleNext} disabled={isSavingScores}>
+              {isSavingScores ? (
+                <>
+                  <SpinnerMini />{" "}
+                  <span style={{ marginLeft: "5px" }}>Saving...</span>
+                </>
+              ) : currentIndex === studentToBeScored.length - 1 ? (
+                "Save"
+              ) : (
+                "Next"
+              )}
             </Button>
           </BtnContainer>
         </ManageMarks>
