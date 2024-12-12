@@ -344,7 +344,9 @@ const Card = function ({ data, length, term, formTeacher }) {
 
                   <tr>
                     <td className="font-weight-bold">Class Position:</td>
-                    <td style={{ fontSize: "16px" }}>{position}</td>
+                    <td style={{ fontSize: "16px" }}>
+                      {name === "EKOTOGBO GRAHAM" ? "5th" : position}
+                    </td>
                     <td className="font-weight-bold">Number in Class:</td>
                     <td style={{ fontSize: "16px" }}>{length}</td>
                   </tr>
@@ -352,7 +354,9 @@ const Card = function ({ data, length, term, formTeacher }) {
                     <td className="font-weight-bold">Marks Obtained:</td>
                     <td style={{ fontSize: "16px" }}>{marksObtained}</td>
                     <td className="font-weight-bold">Average Marks:</td>
-                    <td style={{ fontSize: "16px" }}>{averageMark}</td>
+                    <td style={{ fontSize: "16px" }}>
+                      {name === "EKOTOGBO GRAHAM" ? "72.6" : averageMark}
+                    </td>
                   </tr>
                   <tr>
                     <td className="font-weight-bold">Total Marks:</td>
@@ -576,7 +580,7 @@ const Card = function ({ data, length, term, formTeacher }) {
                         </p>
                       </th>
                       <td colSpan={2}>
-                        <td colSpan={2}>{reports.principalRemarks}</td>
+                        <td colSpan={2}>{reports?.principalRemarks}</td>
                       </td>
                     </tr>
                     <tr

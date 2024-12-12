@@ -142,8 +142,8 @@ function ScoreForm({ formData, onInputChange }) {
         <Label>Principal Remarks</Label>
         <br />
         <Input
-          onChange={onInputChange}
-          defaultValue={principalRemarks}
+          // onChange={onInputChange}
+          value={principalRemarks}
           name="principalRemarks"
         />
       </div>

@@ -87,8 +87,18 @@ function calculateAverageMark(examScores) {
 }
 
 function getPositionString(position) {
-  const suffixes = ["st", "nd", "rd"];
-  const suffix = position > 3 ? "th" : suffixes[position - 1] || suffixes[2];
+  const lastTwoDigits = position % 100;
+  const lastDigit = position % 10;
+
+  // Special case for 11th, 12th, 13th
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return position + "th";
+  }
+
+  // General case for other positions
+  const suffixes = { 1: "st", 2: "nd", 3: "rd" };
+  const suffix = suffixes[lastDigit] || "th";
+
   return position + suffix;
 }
 
@@ -102,6 +112,13 @@ export function assignScores(students, term) {
       student.averageMark = "0.00";
       return;
     }
+
+    // Remove subjects named 'undefined'
+    Object.keys(student.examScores[term]).forEach((subject) => {
+      if (subject === "undefined") {
+        delete student.examScores[term][subject];
+      }
+    });
 
     // Calculate total for each subject
     for (const subject in student.examScores[term]) {
@@ -126,9 +143,23 @@ export function assignScores(students, term) {
     .slice()
     .sort((a, b) => b.totalScore - a.totalScore);
 
-  // Assign positions
+  // Assign positions with tie handling
+  let currentPosition = 0;
+  let previousScore = null;
+  let tieCount = 0;
+
   sortedStudents.forEach((student, index) => {
-    student.position = getPositionString(index + 1);
+    if (student.totalScore === previousScore) {
+      // If scores are the same, share the position
+      tieCount++;
+    } else {
+      // New score, calculate the actual position
+      currentPosition += tieCount + 1;
+      tieCount = 0;
+    }
+
+    student.position = getPositionString(currentPosition);
+    previousScore = student.totalScore;
   });
 
   return sortedStudents;
@@ -205,21 +236,37 @@ export function rearrangeSubjects(subjectsArray) {
   return rearrangedArray;
 }
 export function getStudentPerformanceComment(average) {
-  if (average >= 80 && average <= 100) {
-    return "A Remarkable and Excellent result. Keep it up.";
-  } else if (average >= 70 && average < 79) {
-    return "An Outstanding Perfomance. Keep it up.";
-  } else if (average >= 60 && average < 69) {
-    return "A brilliant perfomance. Keep it up.";
-  } else if (average >= 50 && average < 59) {
-    return "A Very Good Result.";
-  } else if (average >= 40 && average < 49) {
-    return "Pass. Put more effort next term.";
-  } else if (average >= 20 && average < 39) {
-    return "Poor Perfoment. Put more effort next term.";
-  } else if (average <= 19) {
-    return "Poor Perfoment. Put more effort next term.";
-  } else {
-    return "Invalid average score.";
+  // Convert to number and round to two decimal places
+  average = +average; // Force conversion to number
+  if (isNaN(average)) {
+    return "Invalid input. Please provide a valid number.";
   }
+
+  // Round to two decimal places
+  const roundedAverage = Math.round(average * 100) / 100;
+
+  // Check the condition boundaries
+  if (roundedAverage >= 80 && roundedAverage <= 100) {
+    console.log("Condition 1: Remarkable and Excellent result");
+    return "A Remarkable and Excellent result. Keep it up.";
+  } else if (roundedAverage >= 70 && roundedAverage < 80) {
+    console.log("Condition 2: Outstanding Performance");
+    return "An Outstanding Performance. Keep it up.";
+  } else if (roundedAverage >= 60 && roundedAverage < 70) {
+    console.log("Condition 3: Brilliant Performance");
+    return "A brilliant performance. Keep it up.";
+  } else if (roundedAverage >= 50 && roundedAverage < 60) {
+    console.log("Condition 4: Very Good Result");
+    return "A Very Good Result.";
+  } else if (roundedAverage >= 40 && roundedAverage < 50) {
+    console.log("Condition 5: Pass");
+    return "Pass. Put more effort next term.";
+  } else if (roundedAverage >= 20 && roundedAverage < 40) {
+    console.log("Condition 6: Poor Performance");
+    return "Poor Performance. Put more effort next term.";
+  } else if (roundedAverage < 20) {
+    console.log("Condition 7: Very Poor Performance");
+    return "Very Poor Performance. Put more effort next term.";
+  }
+  return "No performance data available.";
 }

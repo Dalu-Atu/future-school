@@ -141,6 +141,7 @@ export async function addOrUpdateAssignedSubject(data) {
 // Function to get all subjects in a particular class with their assigned teacher
 export async function getSubjectsInClass(className) {
   const { data, error } = await supabase.from("teachers").select("*");
+
   if (error) throw new Error("Error fetching teachers:", error);
 
   const result = [];
