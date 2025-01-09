@@ -244,10 +244,13 @@ function ManageSubjects() {
   }
 
   async function submitForm(subjectToAssign) {
+    subjectToAssign.subjectName = subjectToAssign.subjectName.toUpperCase();
+
     clearForm();
     if (isEdit) {
       try {
         setLoading(true);
+
         await updatingSubject({ subjectToAssign, selectedSubject });
       } catch (error) {
         console.error("Error updating data:", error);

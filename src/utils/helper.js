@@ -132,8 +132,9 @@ export function assignScores(students, term) {
     const totalScore = calculateTotalScore(student.examScores[term]) || 0;
     student.totalScore = totalScore;
 
-    const averageMark =
-      totalScore / Object.keys(student.examScores[term]).length || 0;
+    // Calculate averageMark by dividing the totalScore by the number of subjects
+    const numberOfSubjects = Object.keys(student.examScores[term]).length || 1; // Prevent division by 0
+    const averageMark = totalScore / numberOfSubjects;
 
     student.averageMark = averageMark.toFixed(2);
   });

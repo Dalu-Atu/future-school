@@ -1,19 +1,23 @@
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
-import avatar from '../assets/woman.avif';
-import PropTypes from 'prop-types';
-import { MdGroup, MdOutlineDashboardCustomize } from 'react-icons/md';
-import { MdAddCard } from 'react-icons/md';
-import { TbDashboard, TbReport } from 'react-icons/tb';
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+import avatar from "../assets/woman.avif";
+import PropTypes from "prop-types";
+import {
+  MdGroup,
+  MdMenuBook,
+  MdOutlineDashboardCustomize,
+} from "react-icons/md";
+import { MdAddCard } from "react-icons/md";
+import { TbDashboard, TbReport } from "react-icons/tb";
 
-import { LiaSchoolSolid } from 'react-icons/lia';
-import { BsCardChecklist } from 'react-icons/bs';
-import { useTheme } from '../services/ThemeContext';
-import { useSettings } from '../services/settingContext';
-import { useAuth } from '../services/AuthContext';
-import { RiLogoutCircleRLine } from 'react-icons/ri';
-import { useLogout } from '../services/apiAuth';
-import Spinner from './Spinner';
+import { LiaSchoolSolid } from "react-icons/lia";
+import { BsCardChecklist } from "react-icons/bs";
+import { useTheme } from "../services/ThemeContext";
+import { useSettings } from "../services/settingContext";
+import { useAuth } from "../services/AuthContext";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import { useLogout } from "../services/apiAuth";
+import Spinner from "./Spinner";
 
 const StyledSideBarLogo = styled.div`
   gap: 1rem;
@@ -62,7 +66,7 @@ const StyledSideBarList = styled(({ hoverColor, ...props }) => (
   color: var(--color-gray-500);
 
   &:hover {
-    background-color: ${({ hoverColor }) => hoverColor || ''};
+    background-color: ${({ hoverColor }) => hoverColor || ""};
     border-radius: 5px;
   }
 `;
@@ -78,10 +82,10 @@ function SideBarLogo() {
   const settings = useSettings();
   return (
     <StyledSideBarLogo>
-      <div style={{ display: 'flex', fontSize: 'small', alignItems: 'center' }}>
+      <div style={{ display: "flex", fontSize: "small", alignItems: "center" }}>
         <img
           style={{
-            width: '6rem',
+            width: "6rem",
             // height: '5.5rem',
           }}
           src={settings.images.logo}
@@ -89,9 +93,9 @@ function SideBarLogo() {
         />
         <h4
           style={{
-            position: 'relative',
-            left: '0.5rem',
-            top: '',
+            position: "relative",
+            left: "0.5rem",
+            top: "",
           }}
         >
           {settings.schoolName}
@@ -105,11 +109,11 @@ function SideBarList({ icon, label, linkDestination }) {
   const { primaryColor, secondaryColor } = useTheme();
   return (
     <StyledSideBarList
-      hoverColor={'var(--color-gray-300)'}
+      hoverColor={"var(--color-gray-300)"}
       className="navlist"
       to={linkDestination}
     >
-      <p style={{ position: 'relative', top: '0.2rem', left: '0.4rem' }}>
+      <p style={{ position: "relative", top: "0.2rem", left: "0.4rem" }}>
         {icon}
       </p>
       <p>{label}</p>
@@ -125,38 +129,38 @@ function SideBarContent() {
   return (
     <div>
       <SideBarLogo />
-      <div style={{ margin: '2rem' }}></div>
+      <div style={{ margin: "2rem" }}></div>
       <SideBarList
-        icon={<TbDashboard style={{ color: primaryColor }} size={'25px'} />}
+        icon={<TbDashboard style={{ color: primaryColor }} size={"25px"} />}
         label="Dashboard"
         linkDestination="/dashboard"
       />
       <SideBarList
-        icon={<MdAddCard style={{ color: primaryColor }} size={'23px'} />}
+        icon={<MdAddCard style={{ color: primaryColor }} size={"23px"} />}
         label="Manage ID Cards"
         linkDestination="/mangeid"
       />
       <SideBarList
-        icon={<TbReport style={{ color: primaryColor }} size={'26px'} />}
+        icon={<TbReport style={{ color: primaryColor }} size={"26px"} />}
         label="Manage Student Reports"
         linkDestination="/managepsycomotor"
       />
       <SideBarList
-        icon={<BsCardChecklist style={{ color: primaryColor }} size={'23px'} />}
+        icon={<BsCardChecklist style={{ color: primaryColor }} size={"23px"} />}
         label="Manage Results"
         linkDestination="/results"
       />
       <Optional>
         <SideBarList
           icon={
-            <LiaSchoolSolid style={{ color: primaryColor }} size={'25px'} />
+            <LiaSchoolSolid style={{ color: primaryColor }} size={"25px"} />
           }
           label="Manage School"
           linkDestination="/manageschool"
         />
       </Optional>
       <SideBarList
-        icon={<MdGroup style={{ color: primaryColor }} size={'25px'} />}
+        icon={<MdGroup style={{ color: primaryColor }} size={"25px"} />}
         label="Manage Student Access"
         linkDestination="/managestudentaccess"
       />
@@ -164,11 +168,16 @@ function SideBarContent() {
         icon={
           <MdOutlineDashboardCustomize
             style={{ color: primaryColor }}
-            size={'25px'}
+            size={"25px"}
           />
         }
         label="Customize UI"
         linkDestination="/customize"
+      />
+      <SideBarList
+        icon={<MdMenuBook style={{ color: primaryColor }} size={"25px"} />}
+        label="View BroadSheet"
+        linkDestination="/view-broadsheet"
       />
 
       <Footer>
@@ -176,12 +185,12 @@ function SideBarContent() {
           <FooterImg src={user.data.image || avatar} />
           <FooterName>
             <p>{user.data.name}</p>
-            <span style={{ fontSize: 'small', textAlign: 'left' }}>
+            <span style={{ fontSize: "small", textAlign: "left" }}>
               {user.cartegory}
             </span>
           </FooterName>
           <button onClick={() => logoutUser()}>
-            <RiLogoutCircleRLine size={'20px'} />
+            <RiLogoutCircleRLine size={"20px"} />
           </button>
         </FooterDetails>
       </Footer>

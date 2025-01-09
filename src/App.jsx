@@ -47,6 +47,7 @@ import ManageActivitiesOption from "./ui/ManageActivitiesOption";
 import { GlobalErrorProvider } from "./services/GlobalErrorContext ";
 import ErrorBoundary from "./ui/ErrorBoundary ";
 import PortalResult from "./pages/PortalResult";
+import BroadSheet from "./pages/BroadSheet";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -135,6 +136,7 @@ function App() {
                         path="/class-results"
                         element={<ResultContainer />}
                       />
+                      <Route path="/view-broadsheet" element={<BroadSheet />} />
                       <Route path="/generatedIds" element={<StudentID />} />
 
                       <Route
@@ -177,6 +179,7 @@ function App() {
                           path="/managepsycomotor"
                           element={<ManagePsychomotor />}
                         />
+
                         <Route
                           path="/managestudentaccess"
                           element={<ManageStudentAccess />}

@@ -56,10 +56,7 @@ export async function addOrUpdateAssignedSubject(data) {
     currentTeaches[className] = currentTeaches[className] || [];
 
     // Remove previous subject if it differs from the new one
-    if (
-      previousSubjectData.subject &&
-      previousSubjectData.subject !== subjectName
-    ) {
+    if (previousSubjectData.subject !== subjectName) {
       currentTeaches[className] = currentTeaches[className].filter(
         (sbj) => sbj !== previousSubjectData.subject
       );
@@ -102,19 +99,10 @@ export async function addOrUpdateAssignedSubject(data) {
       }
 
       // Rename subject if it exists in each term
-      if (examScores[term][previousSubjectData.subject]) {
+      if (previousSubjectData.subject !== subjectName) {
         examScores[term][subjectName] =
           examScores[term][previousSubjectData.subject];
         delete examScores[term][previousSubjectData.subject];
-      }
-
-      // Ensure the new subject is added in all terms if not present
-      if (!examScores[term][subjectName]) {
-        examScores[term][subjectName] = {
-          firstTest: 0,
-          secondTest: 0,
-          exam: 0,
-        };
       }
     });
 
