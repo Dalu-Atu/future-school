@@ -35,7 +35,7 @@ function ScoreForm({ formData, onInputChange }) {
 
   // Automatically update absent when present changes
   useEffect(() => {
-    const newAbsent = 124 - present;
+    const newAbsent = 126 - present;
     setAbsent(newAbsent);
     onInputChange({ target: { name: "absent", value: newAbsent } });
   }, [present]);
