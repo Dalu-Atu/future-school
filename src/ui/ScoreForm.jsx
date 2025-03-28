@@ -27,7 +27,7 @@ function ScoreForm({ formData, onInputChange }) {
   );
   const [creativity, setCreativity] = useState(reports?.creativity || 0);
   const [present, setPresent] = useState(reports?.present || 0);
-  const [absent, setAbsent] = useState(124 - (reports?.present || 0));
+  const [absent, setAbsent] = useState(126 - (reports?.present || 0));
   const [remarks, setRemarks] = useState(reports?.remarks || "");
   const [principalRemarks, setPrincipalRemark] = useState(
     reports?.principalRemarks || ""
