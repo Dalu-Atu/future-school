@@ -1,10 +1,11 @@
 export function addRemarksToResult(grade) {
   let addRemarksToResult;
 
-  if (grade <= 30) addRemarksToResult = "POOR";
-  if (grade >= 30 && grade <= 50) addRemarksToResult = "GOOD";
-  if (grade >= 50 && grade <= 70) addRemarksToResult = "VERY GOOD";
-  if (grade >= 70) addRemarksToResult = "EXCELLENT";
+  if (grade <= 39) addRemarksToResult = "Fail";
+  if (grade >= 40 && grade <= 49) addRemarksToResult = "Fair";
+  if (grade >= 50 && grade <= 59) addRemarksToResult = "GOOD";
+  if (grade >= 60 && grade <= 69) addRemarksToResult = "V.GOOD";
+  if (grade >= 70 && grade <= 100) addRemarksToResult = "EXCELLENT";
   return addRemarksToResult;
 }
 
