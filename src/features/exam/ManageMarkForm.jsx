@@ -28,10 +28,18 @@ function ManageMarkForm({ formData, sbjName, onInputChange }) {
   }, [subjectScore?.firstTest, subjectScore?.secondTest, subjectScore?.exam]);
 
   useEffect(() => {
-    if (totalScore <= 30) setGradeComment('Poor');
-    else if (totalScore > 30 && totalScore < 50) setGradeComment('Good');
-    else if (totalScore >= 50 && totalScore < 70) setGradeComment('V.Good');
-    else if (totalScore >= 70) setGradeComment('Excellent');
+   if (totalScore <= 39) {
+  setGradeComment('Fail');
+} else if (totalScore <= 49) {
+  setGradeComment('Fair');
+} else if (totalScore <= 59) {
+  setGradeComment('GOOD');
+} else if (totalScore <= 69) {
+  setGradeComment('V.GOOD');
+} else if (totalScore <= 109) {
+  setGradeComment('EXCELLENT');
+}
+
   }, [totalScore]);
 
   const handleGradeCommentChange = (e) => {
