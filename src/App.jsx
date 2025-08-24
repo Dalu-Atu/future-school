@@ -48,6 +48,8 @@ import { GlobalErrorProvider } from "./services/GlobalErrorContext ";
 import ErrorBoundary from "./ui/ErrorBoundary ";
 import PortalResult from "./pages/PortalResult";
 import BroadSheet from "./pages/BroadSheet";
+import { Analytics } from "@vercel/analytics/react";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +70,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+     <Analytics />
       <ErrorBoundary>
         <GlobalErrorProvider>
           <AuthProvider>
