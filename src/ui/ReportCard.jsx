@@ -1,6 +1,5 @@
-import logo from "../assets/logo.png";
 import background from "../assets/bg.png";
-import hmStamp from "../assets/hmstamp.png";
+import hmStamp from "/30_sign.png";
 import principalStamp from "../assets/principalstsmp.png";
 import userProfile from "../assets/user.jpg";
 import "../styles/reportCard.css";
@@ -17,7 +16,7 @@ import styled from "styled-components";
 
 const TableContainer = styled.div`
   display: flex;
- justifyContent: space-evenly
+  justifycontent: space-evenly;
   align-items: center;
   gap: 1rem;
 `;
@@ -193,6 +192,35 @@ const Card = function ({ data, length, term, formTeacher }) {
   } = data;
   console.log(reports);
 
+  // Calculate cumulative average across all terms
+  const calculateCumulativeAverage = () => {
+    const terms = Object.keys(examScores);
+    let totalMarksAllTerms = 0;
+    let totalSubjectsAllTerms = 0;
+
+    terms.forEach((termKey) => {
+      const termScores = examScores[termKey];
+      Object.values(termScores).forEach((scores) => {
+        // Calculate total for this subject in this term
+        const subjectTotal =
+          (scores.firstTest || 0) +
+          (scores.secondTest || 0) +
+          (scores.exam || 0);
+        if (subjectTotal > 0) {
+          // Only count subjects that have scores
+          totalMarksAllTerms += subjectTotal;
+          totalSubjectsAllTerms++;
+        }
+      });
+    });
+
+    return totalSubjectsAllTerms > 0
+      ? (totalMarksAllTerms / totalSubjectsAllTerms).toFixed(2)
+      : "0.00";
+  };
+
+  const cumulativeAverage = calculateCumulativeAverage();
+
   const totalMark = Object.keys(examScores[term]).length * 100;
 
   const scoresArray = Object.entries(examScores[term]).map(
@@ -210,30 +238,6 @@ const Card = function ({ data, length, term, formTeacher }) {
   }));
 
   const summary = generateReportSummary(reportsData);
-
-  // useEffect(() => {
-  //   // Dynamically import Bootstrap CSS
-  //   const bootstrapLink = document.createElement("link");
-  //   bootstrapLink.href =
-  //     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
-  //   bootstrapLink.rel = "stylesheet";
-  //   bootstrapLink.integrity =
-  //     "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm";
-  //   bootstrapLink.crossOrigin = "anonymous";
-  //   document.head.appendChild(bootstrapLink);
-
-  //   // Dynamically import custom CSS after Bootstrap
-  //   const customLink = document.createElement("link");
-  //   customLink.href = "../styles/reportCard.css"; // Replace with the path to your custom CSS file
-  //   customLink.rel = "stylesheet";
-  //   document.head.appendChild(customLink);
-
-  //   // Clean up on unmount
-  //   return () => {
-  //     document.head.removeChild(bootstrapLink);
-  //     document.head.removeChild(customLink);
-  //   };
-  // }, []);
 
   return (
     <>
@@ -344,9 +348,7 @@ const Card = function ({ data, length, term, formTeacher }) {
 
                   <tr>
                     <td className="font-weight-bold">Class Position:</td>
-                    <td style={{ fontSize: "16px" }}>
-                      {name === "EKOTOGBO GRAHAM" ? "5th" : position}
-                    </td>
+                    <td style={{ fontSize: "16px" }}>{position}</td>
                     <td className="font-weight-bold">Number in Class:</td>
                     <td style={{ fontSize: "16px" }}>{length}</td>
                   </tr>
@@ -354,9 +356,7 @@ const Card = function ({ data, length, term, formTeacher }) {
                     <td className="font-weight-bold">Marks Obtained:</td>
                     <td style={{ fontSize: "16px" }}>{marksObtained}</td>
                     <td className="font-weight-bold">Average Marks:</td>
-                    <td style={{ fontSize: "16px" }}>
-                      {name === "EKOTOGBO GRAHAM" ? "72.6" : averageMark}
-                    </td>
+                    <td style={{ fontSize: "16px" }}>{averageMark}</td>
                   </tr>
                   <tr>
                     <td className="font-weight-bold">Total Marks:</td>
@@ -392,7 +392,6 @@ const Card = function ({ data, length, term, formTeacher }) {
                           </td>
                         </tr>
                         <tr>
-                          {/* <th scope="col">SlNo</th> */}
                           <th
                             scope="col"
                             style={{
@@ -539,6 +538,41 @@ const Card = function ({ data, length, term, formTeacher }) {
                                 </tr>
                               </tbody>
                             </table>
+                          </td>
+                          <td>
+                            {term.toUpperCase() === "THIRDTERM" ? (
+                              <table className="table" id="tbl_1">
+                                <tbody>
+                                  <tr>
+                                    <th></th>
+                                    <th>CUMULATIVE AVERAGE</th>
+                                    <th>RATINGS</th>
+                                  </tr>
+                                  <tr>
+                                    <td>1</td>
+                                    <td>Overall Average</td>
+                                    <td>{cumulativeAverage}</td>
+                                  </tr>
+                                  {/* <tr>
+                                    <td>2</td>
+                                    <td>Performance</td>
+                                    <td>
+                                      {parseFloat(cumulativeAverage) >= 70
+                                        ? "Excellent"
+                                        : parseFloat(cumulativeAverage) >= 60
+                                        ? "Good"
+                                        : parseFloat(cumulativeAverage) >= 50
+                                        ? "Fair"
+                                        : parseFloat(cumulativeAverage) >= 40
+                                        ? "Poor"
+                                        : "Very Poor"}
+                                    </td>
+                                  </tr> */}
+                                </tbody>
+                              </table>
+                            ) : (
+                              ""
+                            )}
                           </td>
                         </tr>
                       </tbody>

@@ -33,54 +33,66 @@ export async function UpdateMarks(
   stdClass,
   currentTerm
 ) {
+  console.log(updatedMarks);
+
   const { data: allStudents, error } = await supabase
     .from("students")
-    .select("*")
+    .select("id, name, examScores")
     .eq("class_id", stdClass);
 
   if (error) {
     console.error("Error fetching students:", error.message);
-    return null;
+    return { success: false, message: "Failed to fetch students" };
   }
 
-  // Update marks for each student in the specified term
-  const updatedStudents = allStudents.map(async (std) => {
+  const updates = [];
+  const errors = [];
+
+  for (const std of allStudents) {
     const newSbjDat = updatedMarks.find((student) => student.name === std.name);
-
-    if (newSbjDat) {
-      const updatedExamScores = { ...std.examScores };
-
-      // Ensure the term and subject structures exist before updating
-      if (!updatedExamScores[currentTerm]) {
-        updatedExamScores[currentTerm] = {};
-      }
-
-      updatedExamScores[currentTerm][subjectToModify] =
-        newSbjDat[subjectToModify];
-
-      const { data: updatedStudentData, error: updateError } = await supabase
-        .from("students")
-        .update({ examScores: updatedExamScores })
-        .eq("name", std.name)
-        .eq("class_id", stdClass);
-
-      if (updateError) {
-        console.error(
-          `Error updating student ${std.name}:`,
-          updateError.message
-        );
-        throw new Error(`Error updating student ${std.name}`);
-      }
-
-      return updatedStudentData;
-    } else {
+    if (!newSbjDat) {
       console.warn(`No updated marks found for student: ${std.name}`);
-      return null;
+      continue;
+    }
+
+    const updatedExamScores = { ...std.examScores };
+    if (!updatedExamScores[currentTerm]) {
+      updatedExamScores[currentTerm] = {};
+    }
+    updatedExamScores[currentTerm][subjectToModify] =
+      newSbjDat[subjectToModify];
+
+    updates.push({
+      id: std.id,
+      examScores: updatedExamScores,
+    });
+  }
+
+  // Perform updates in bulk (one query per student, but without await inside loop)
+  const updatePromises = updates.map((u) =>
+    supabase
+      .from("students")
+      .update({ examScores: u.examScores })
+      .eq("id", u.id)
+  );
+
+  const results = await Promise.allSettled(updatePromises);
+
+  results.forEach((res, idx) => {
+    if (res.status === "rejected" || res.value.error) {
+      errors.push({
+        studentId: updates[idx].id,
+        error: res.reason || res.value.error.message,
+      });
     }
   });
 
-  const results = await Promise.all(updatedStudents);
-  return results.filter((result) => result !== null); // Filter out any null results
+  return {
+    success: errors.length === 0,
+    updated: updates.length - errors.length,
+    failed: errors.length,
+    errors,
+  };
 }
 
 export async function UpdateReports(reports, stdClass) {

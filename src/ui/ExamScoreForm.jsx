@@ -107,6 +107,8 @@ function ExamScoreForm({ selectedClass, selectedSubject, selectedTerm }) {
       ManageClassAndSubjectScores(selectedClass, selectedSubject, selectedTerm),
   });
 
+  console.log(studentToBeScored);
+
   const { mutate: saveStudentScores, isPending: isSavingScores } = useMutation({
     mutationFn: () =>
       UpdateMarks(studentsData, selectedSubject, selectedClass, selectedTerm),
@@ -219,3 +221,46 @@ ExamScoreForm.propTypes = {
   selectedSubject: PropTypes.string.isRequired,
 };
 export default ExamScoreForm;
+
+// Creative Art
+// :
+// {exam: 0, firstTest: 0, secondTest: 0}
+// image
+// :
+// null
+// name
+// :
+// "ADEBAYOR KESSIANA SKYLAR"
+// [[Prototype]]
+// :
+// Object
+// 1
+// :
+// Creative Art
+// :
+// {exam: 0, firstTest: 0, secondTest: 0}
+// image
+// :
+// null
+// name
+// :
+// "AKPE SADE GWENELYN"
+// [[Prototype]]
+// :
+// Object
+// 2
+// :
+// {image: null, name: 'AMUGHORO .O. EXCITEMENT', Creative Art: undefined}
+// 3
+// :
+// {image: null, name: 'DELE GOODNEWS', Creative Art: {…}}
+// 4
+// :
+// {image: null, name: 'EGUVWESE ISIOGHENE KAREN', Creative Art: {…}}
+// 5
+// :
+// {image: null, name: 'ESANJUMI AGHOGHO MICHELLE', Creative Art: {…}}
+// 6
+// :
+// {image: null, name: 'EYEFIA JOANNA', Creative Art: {…}}
+// 7

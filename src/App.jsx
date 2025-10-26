@@ -21,7 +21,6 @@ import Login from "./pages/Login";
 import LoginPortal from "./pages/LoginPortal";
 import TeachersDashboard from "./features/Users/UserDashboard";
 import TeachersDasbboardOverview from "./features/Users/UserDashboardOverview";
-import AddExamScores from "./features/Users/AddExamScores";
 import AddStudentreport from "./features/Users/AddStudentReport";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { AuthProvider } from "./services/AuthContext";
@@ -48,8 +47,12 @@ import { GlobalErrorProvider } from "./services/GlobalErrorContext ";
 import ErrorBoundary from "./ui/ErrorBoundary ";
 import PortalResult from "./pages/PortalResult";
 import BroadSheet from "./pages/BroadSheet";
+<<<<<<< HEAD
 import { Analytics } from "@vercel/analytics/react";
 
+=======
+import AIMarksProcessor from "./pages/AIMarksProcessor";
+>>>>>>> a5210a8 (ai marks)
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -111,12 +114,16 @@ function App() {
                       element={<Navigate replace to="/account/dashboard" />}
                     /> */}
                         <Route
+                          path="review-score"
+                          element={<AIMarksProcessor />}
+                        />
+                        <Route
                           path="/account/dashboard"
                           element={<TeachersDasbboardOverview />}
                         />
                         <Route
                           path="/account/managemarks"
-                          element={<AddExamScores />}
+                          element={<Managexam />}
                         />
                         <Route
                           path="/account/managereports"
@@ -166,6 +173,10 @@ function App() {
                             element={<Settings />}
                           />
                           <Route
+                            path="review-score"
+                            element={<AIMarksProcessor />}
+                          />
+                          <Route
                             path="/customize/appearance"
                             element={<CustomizeApearance />}
                           />
@@ -182,12 +193,12 @@ function App() {
                           path="/managepsycomotor"
                           element={<ManagePsychomotor />}
                         />
-
                         <Route
                           path="/managestudentaccess"
                           element={<ManageStudentAccess />}
                         />
                         <Route path="managexam" element={<Managexam />} />
+
                         <Route
                           path="managesubjects/:id"
                           element={<ManageSubjects />}
@@ -200,7 +211,6 @@ function App() {
                   path="managestudentaccess/:id"
                   element={<ManageStudentAccess />}
                 /> */}
-
                         <Route path="manageschool" element={<Management />}>
                           <Route
                             index
@@ -239,7 +249,6 @@ function App() {
                             element={<ClassList specifiedRoute="student" />}
                           />
                         </Route>
-
                         <Route path="dashboard" element={<Dashboard />}>
                           <Route
                             index

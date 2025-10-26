@@ -1,13 +1,13 @@
-import styled from 'styled-components';
-import SideBarContent from './SideBarContent';
-import { forwardRef } from 'react';
+import styled from "styled-components";
+import SideBarContent from "./SideBarContent";
+import { forwardRef } from "react";
 const StyledSidebar = styled.aside`
   position: fixed;
   top: 0;
   left: ${(props) =>
-    props.$visible === 'true'
-      ? '0'
-      : '-25rem'}; /* Hide the sidebar by default */
+    props.$visible === "true"
+      ? "0"
+      : "-25rem"}; /* Hide the sidebar by default */
   width: 25rem;
   height: 100vh;
   transition: left 0.3s ease; /* Add transition effect for smooth animation */
@@ -51,6 +51,6 @@ const Sidebar = forwardRef(({ visible, toggleSidebar }, ref) => {
     </StyledSidebar>
   );
 });
-Sidebar.displayName = 'Sidebar';
+Sidebar.displayName = "Sidebar";
 
 export default Sidebar;
