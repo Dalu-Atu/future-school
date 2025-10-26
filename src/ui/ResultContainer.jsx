@@ -6,9 +6,6 @@ import { fetchStudents } from "../services/schoolStudents";
 import { useLocation } from "react-router-dom";
 import Spinner from "./Spinner";
 import Card from "./ReportCard";
-// import { useEffect } from "react";
-// import { getFormTeacherForClass } from "../services/teachersService";
-// import toast from "react-hot-toast";
 
 const Container = styled.div``;
 function ResultContainer() {
@@ -76,47 +73,3 @@ function ResultContainer() {
 
 export default ResultContainer;
 
-// [{…}]
-// 0
-// :
-// cartegory
-// :
-// "students"
-// class_id
-// :
-// "PC 4 Lavender"
-// created_at
-// :
-// "2024-04-30T14:52:15.889578+00:00"
-// examScores
-// :
-// {CRS: {…}, ENGLISH: {…}, Letter Work: {…}, Number Works: {…}}
-// gender
-// :
-// "male"
-// id
-// :
-// 3
-// name
-// :
-// "migthy"
-// password
-// :
-// "mughen"
-// reports
-// :
-// {absent: 6, present: 5, remarks: 7, neatness: 2, creativity: 4, …}
-// section
-// :
-// "secondary"
-// username
-// :
-// "mighty"
-
-// i have an array of object like the one above and i want to include some field on each student obj,
-// first the total point.
-// loop over all the student and calculate the the total score of all thier subject in the examScore array
-// then add a field in the student object and give it the value of the total score
-// also i want a position you can check for the student with the highest score and give them positions like 1st 2nd 3rd and so on.
-// add a field on each student and give it a position
-// also i want you to create another field alao with the average mark of each student
