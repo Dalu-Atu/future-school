@@ -47,12 +47,10 @@ import { GlobalErrorProvider } from "./services/GlobalErrorContext ";
 import ErrorBoundary from "./ui/ErrorBoundary ";
 import PortalResult from "./pages/PortalResult";
 import BroadSheet from "./pages/BroadSheet";
-<<<<<<< HEAD
-import { Analytics } from "@vercel/analytics/react";
 
-=======
+import { Analytics } from "@vercel/analytics/react";
 import AIMarksProcessor from "./pages/AIMarksProcessor";
->>>>>>> a5210a8 (ai marks)
+
 
 const queryClient = new QueryClient({
   defaultOptions: {

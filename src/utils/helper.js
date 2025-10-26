@@ -6,21 +6,6 @@
 //   return "FAIL";
 // }
 
-<<<<<<< HEAD
-  if (grade <= 39) {
-    addRemarksToResult = "Fail";
-  } else if (grade <= 49) {
-    addRemarksToResult = "Fair";
-  } else if (grade <= 59) {
-    addRemarksToResult = "GOOD";
-  } else if (grade <= 69) {
-    addRemarksToResult = "V.GOOD";
-  } else if (grade <= 109) {
-    addRemarksToResult = "EXCELLENT";
-  }
-
-  return addRemarksToResult;
-=======
 //SECONDARY GRADE FUNCTION
 // export function addGradeToResult(grade) {
 //   let addRemarksToResult;
@@ -41,7 +26,6 @@ export function addRemarksToResult(grade) {
   if (grade >= 40 && grade <= 49) return "FAIR";
   if (grade >= 30 && grade <= 39) return "FAIL";
   return "FAIL";
->>>>>>> a5210a8 (ai marks)
 }
 
 
@@ -273,48 +257,10 @@ export function rearrangeSubjects(subjectsArray) {
   return rearrangedArray;
 }
 
-//USE THIS ONE IF NOT THIRD TERM
-// export function getStudentPerformanceComment(average) {
-//   // Convert to number and round to two decimal places
-//   average = +average; // Force conversion to number
-//   if (isNaN(average)) {
-//     return "Invalid input. Please provide a valid number.";
-//   }
-
-//   // Round to two decimal places
-//   const roundedAverage = Math.round(average * 100) / 100;
-
-//   // Check the condition boundaries
-//   if (roundedAverage >= 80 && roundedAverage <= 100) {
-//     console.log("Condition 1: Remarkable and Excellent result");
-//     return "A Remarkable and Excellent result. Keep it up.";
-//   } else if (roundedAverage >= 70 && roundedAverage < 80) {
-//     console.log("Condition 2: Outstanding Performance");
-//     return "An Outstanding Performance. Keep it up.";
-//   } else if (roundedAverage >= 60 && roundedAverage < 70) {
-//     console.log("Condition 3: Brilliant Performance");
-//     return "A brilliant performance. Keep it up.";
-//   } else if (roundedAverage >= 50 && roundedAverage < 60) {
-//     console.log("Condition 4: Very Good Result");
-//     return "A Very Good Result.";
-//   } else if (roundedAverage >= 40 && roundedAverage < 50) {
-//     console.log("Condition 5: Pass");
-//     return "Pass. Put more effort next term.";
-//   } else if (roundedAverage >= 20 && roundedAverage < 40) {
-//     console.log("Condition 6: Poor Performance");
-//     return "Poor Performance. Put more effort next term.";
-//   } else if (roundedAverage < 20) {
-//     console.log("Condition 7: Very Poor Performance");
-//     return "Very Poor Performance. Put more effort next term.";
-//   }
-//   return "No performance data available.";
-// }
-
+// USE THIS ONE IF NOT THIRD TERM
 export function getStudentPerformanceComment(average) {
-  // Convert to number
-  average = +average;
-
-  // Handle invalid input
+  // Convert to number and round to two decimal places
+  average = +average; // Force conversion to number
   if (isNaN(average)) {
     return "Invalid input. Please provide a valid number.";
   }
@@ -322,12 +268,51 @@ export function getStudentPerformanceComment(average) {
   // Round to two decimal places
   const roundedAverage = Math.round(average * 100) / 100;
 
-  // Determine performance status
-  if (roundedAverage >= 40) {
-    console.log("Promoted");
-    return "Promoted to the Next class";
-  } else {
-    console.log("Failed");
-    return "Failed";
+  // Check the condition boundaries
+  if (roundedAverage >= 80 && roundedAverage <= 100) {
+    console.log("Condition 1: Remarkable and Excellent result");
+    return "A Remarkable and Excellent result. Keep it up.";
+  } else if (roundedAverage >= 70 && roundedAverage < 80) {
+    console.log("Condition 2: Outstanding Performance");
+    return "An Outstanding Performance. Keep it up.";
+  } else if (roundedAverage >= 60 && roundedAverage < 70) {
+    console.log("Condition 3: Brilliant Performance");
+    return "A brilliant performance. Keep it up.";
+  } else if (roundedAverage >= 50 && roundedAverage < 60) {
+    console.log("Condition 4: Very Good Result");
+    return "A Very Good Result.";
+  } else if (roundedAverage >= 40 && roundedAverage < 50) {
+    console.log("Condition 5: Pass");
+    return "Pass. Put more effort next term.";
+  } else if (roundedAverage >= 20 && roundedAverage < 40) {
+    console.log("Condition 6: Poor Performance");
+    return "Poor Performance. Put more effort next term.";
+  } else if (roundedAverage < 20) {
+    console.log("Condition 7: Very Poor Performance");
+    return "Very Poor Performance. Put more effort next term.";
   }
+  return "No performance data available.";
 }
+
+//ONLY FOR THIRD TERM
+// export function getStudentPerformanceComment(average) {
+//   // Convert to number
+//   average = +average;
+
+//   // Handle invalid input
+//   if (isNaN(average)) {
+//     return "Invalid input. Please provide a valid number.";
+//   }
+
+//   // Round to two decimal places
+//   const roundedAverage = Math.round(average * 100) / 100;
+
+//   // Determine performance status
+//   if (roundedAverage >= 40) {
+//     console.log("Promoted");
+//     return "Promoted to the Next class";
+//   } else {
+//     console.log("Failed");
+//     return "Failed";
+//   }
+// }
