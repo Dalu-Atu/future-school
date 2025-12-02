@@ -1,7 +1,9 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
-const GEN_AI_MODEL = "gemini-3-pro-preview";
-const genAI = new GoogleGenerativeAI("AIzaSyC4h5GNX4dXim_iMgeTq76MS_b4ZJgbPO8");
+// const GEN_AI_MODEL = "gemini-3-pro-preview";
+const GEN_AI_MODEL = "gemini-2.5-flash";
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Added VITE_ prefix
+const genAI = new GoogleGenerativeAI(API_KEY);
 
 // ---------------------------------------------------------
 // 1. HELPER: Image Compression (Standard)
@@ -246,7 +248,7 @@ async function TranscribeScores(images, studentData, subject, maxRetries = 10) {
       return finalData;
     } catch (error) {
       console.error(`Attempt ${attempt} Error:`, error);
-      if (attempt === maxRetries) throw 'Slow Network Issue';
+      if (attempt === maxRetries) throw "Slow Network Issue";
       await new Promise((r) => setTimeout(r, 2000));
     }
   }
