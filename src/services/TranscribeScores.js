@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
-// const GEN_AI_MODEL = "gemini-3-pro-preview";
-const GEN_AI_MODEL = "gemini-2.5-flash";
+ const GEN_AI_MODEL = "gemini-3-pro-preview";
+// const GEN_AI_MODEL = "gemini-2.5-flash";
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // Added VITE_ prefix
 const genAI = new GoogleGenerativeAI(API_KEY);
 
