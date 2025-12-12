@@ -122,6 +122,31 @@ function getPositionString(position) {
   return position + suffix;
 }
 
+/**
+ * Helper function to format the position number into an ordinal string (e.g., 1st, 2nd, 3rd, 4th).
+ * @param {number} position - The rank of the student (1, 2, 3, ...).
+ * @returns {string} The formatted ordinal position string.
+ */
+function getPositionString(position) {
+  const lastTwoDigits = position % 100;
+  const lastDigit = position % 10;
+
+  // Handles 11th, 12th, 13th
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return position + "th";
+  }
+
+  const suffixes = { 1: "st", 2: "nd", 3: "rd" };
+  const suffix = suffixes[lastDigit] || "th";
+
+  return position + suffix;
+}
+
+// NOTE: This function is assumed to be defined elsewhere or is the source of the totalScore calculation.
+// For robustness, I'm assuming 'calculateTotalScore' correctly sums the subject totals that were
+// calculated in the preceding loop.
+// function calculateTotalScore(examScoresBySubject) { /* ... */ }
+
 export function assignScores(students, term) {
   if (!students || !Array.isArray(students)) return [];
 
@@ -133,45 +158,51 @@ export function assignScores(students, term) {
       return;
     }
 
-    // Remove subjects named 'undefined'
-    Object.keys(student.examScores[term]).forEach((subject) => {
+    const subjectScores = student.examScores[term];
+    
+    // Clean up undefined subjects
+    Object.keys(subjectScores).forEach((subject) => {
       if (subject === "undefined") {
-        delete student.examScores[term][subject];
+        delete subjectScores[subject];
       }
     });
 
     // Calculate total for each subject
-    for (const subject in student.examScores[term]) {
-      const scores = student.examScores[term][subject] || {};
+    for (const subject in subjectScores) {
+      const scores = subjectScores[subject] || {};
       const total =
         (scores.firstTest || 0) + (scores.secondTest || 0) + (scores.exam || 0);
       scores.total = total;
     }
 
-    // Calculate total and average scores
-    const totalScore = calculateTotalScore(student.examScores[term]) || 0;
+    // Calculate total score
+    // Assumes calculateTotalScore sums the 'scores.total' values calculated above.
+    const totalScore = calculateTotalScore(subjectScores) || 0;
     student.totalScore = totalScore;
 
-    // Calculate averageMark by dividing the totalScore by the number of subjects
-    const numberOfSubjects = Object.keys(student.examScores[term]).length || 1; // Prevent division by 0
+    // Calculate average mark
+    const numberOfSubjects = Object.keys(subjectScores).length || 1;
     const averageMark = totalScore / numberOfSubjects;
 
     student.averageMark = averageMark.toFixed(2);
   });
 
-  // Sort students by total score
+  // Sort students by average mark (Highest average = better position)
   const sortedStudents = students
     .slice()
-    .sort((a, b) => b.totalScore - a.totalScore);
+    .sort((a, b) => parseFloat(b.averageMark) - parseFloat(a.averageMark));
 
-  // Assign positions with tie handling
+  // Assign positions with tie handling based on average mark
   let currentPosition = 0;
-  let previousScore = null;
+  let previousAverage = null;
   let tieCount = 0;
 
   sortedStudents.forEach((student, index) => {
-    if (student.totalScore === previousScore) {
-      // If scores are the same, share the position
+    // We use parseFloat here because averageMark is stored as a string (e.g., "75.50")
+    const currentAverage = parseFloat(student.averageMark); 
+
+    if (currentAverage === previousAverage) {
+      // Scores are the same, share the position
       tieCount++;
     } else {
       // New score, calculate the actual position
@@ -180,12 +211,11 @@ export function assignScores(students, term) {
     }
 
     student.position = getPositionString(currentPosition);
-    previousScore = student.totalScore;
+    previousAverage = currentAverage;
   });
 
   return sortedStudents;
 }
-
 export function convertClassNames(classNames) {
   const formattedNames = classNames.map((className) => {
     // Split the class name by uppercase letters or digits
