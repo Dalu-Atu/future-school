@@ -28,7 +28,6 @@ export function addRemarksToResult(grade) {
   return "FAIL";
 }
 
-
 export function addGradeToResult(grade) {
   if (grade >= 70) return "A";
   if (grade >= 60 && grade <= 69) return "B";
@@ -41,7 +40,6 @@ export function addGradeToResult(grade) {
 export function generateReportSummary(reports) {
   const reportSummary = {};
 
-  // Define mappings
   const valueMappings = {
     0: "GOOD",
     1: "POOR",
@@ -51,13 +49,11 @@ export function generateReportSummary(reports) {
     5: "EXCELLENT",
   };
 
-  // Loop through the reports
   for (let i = 0; i < reports.length; i++) {
     const report = reports[i];
     const reportName = report.report;
     const reportValue = report.value;
 
-    // Check if the report value exists in the mappings
     if (typeof reportValue === "number") {
       if (reportName !== "absent" && reportName !== "present") {
         if (valueMappings[reportValue]) {
@@ -67,7 +63,6 @@ export function generateReportSummary(reports) {
         reportSummary[reportName] = reportValue;
       }
     } else {
-      // If it's a string, assign it directly
       reportSummary[reportName] = reportValue;
     }
   }
@@ -81,7 +76,6 @@ function calculateTotalScore(examScores) {
     const scores = examScores[subject];
     for (const scoreType in scores) {
       if (scoreType !== "total") {
-        // Avoid including 'total' in the sum
         totalScore += scores[scoreType];
       }
     }
@@ -96,35 +90,19 @@ function calculateAverageMark(examScores) {
     const scores = examScores[subject];
     for (const scoreType in scores) {
       if (scoreType !== "total") {
-        // Avoid including 'total' in the average calculation
         totalScore += scores[scoreType];
         scoreCount++;
       }
     }
   }
-  if (scoreCount === 0) return 0; // Avoid division by zero
+  if (scoreCount === 0) return 0;
   return totalScore / scoreCount;
 }
 
-function getPositionString(position) {
-  const lastTwoDigits = position % 100;
-  const lastDigit = position % 10;
-
-  // Special case for 11th, 12th, 13th
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
-    return position + "th";
-  }
-
-  // General case for other positions
-  const suffixes = { 1: "st", 2: "nd", 3: "rd" };
-  const suffix = suffixes[lastDigit] || "th";
-
-  return position + suffix;
-}
-
 /**
- * Helper function to format the position number into an ordinal string (e.g., 1st, 2nd, 3rd, 4th).
- * @param {number} position - The rank of the student (1, 2, 3, ...).
+ * Formats the position number into an ordinal string (e.g., 1st, 2nd, 3rd, 4th).
+ * Note: Duplicate definition removed.
+ * @param {number} position - The rank of the student.
  * @returns {string} The formatted ordinal position string.
  */
 function getPositionString(position) {
@@ -141,11 +119,6 @@ function getPositionString(position) {
 
   return position + suffix;
 }
-
-// NOTE: This function is assumed to be defined elsewhere or is the source of the totalScore calculation.
-// For robustness, I'm assuming 'calculateTotalScore' correctly sums the subject totals that were
-// calculated in the preceding loop.
-// function calculateTotalScore(examScoresBySubject) { /* ... */ }
 
 export function assignScores(students, term) {
   if (!students || !Array.isArray(students)) return [];
@@ -176,7 +149,6 @@ export function assignScores(students, term) {
     }
 
     // Calculate total score
-    // Assumes calculateTotalScore sums the 'scores.total' values calculated above.
     const totalScore = calculateTotalScore(subjectScores) || 0;
     student.totalScore = totalScore;
 
@@ -198,7 +170,7 @@ export function assignScores(students, term) {
   let tieCount = 0;
 
   sortedStudents.forEach((student, index) => {
-    // We use parseFloat here because averageMark is stored as a string (e.g., "75.50")
+    // Use parseFloat because averageMark is stored as a string
     const currentAverage = parseFloat(student.averageMark); 
 
     if (currentAverage === previousAverage) {
@@ -216,16 +188,17 @@ export function assignScores(students, term) {
 
   return sortedStudents;
 }
+
 export function convertClassNames(classNames) {
   const formattedNames = classNames.map((className) => {
     // Split the class name by uppercase letters or digits
     const words = className.match(/[A-Z]+|[0-9]+/g);
 
-    // If there are words, format them as required
+    // If there are words, format them
     if (words) {
       return words
         .map((word) => {
-          // Convert the first character to uppercase and the rest to lowercase
+          // Capitalize first letter, lowercase the rest
           return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
         })
         .join(" "); // Join the words with a space
@@ -236,6 +209,7 @@ export function convertClassNames(classNames) {
 
   return formattedNames.join(" and "); // Join the formatted names with 'and'
 }
+
 export function rearrangeSubjects(subjectsArray) {
   // Define a priority order for subjects (all lowercase)
   const priorityOrder = [
@@ -262,7 +236,6 @@ export function rearrangeSubjects(subjectsArray) {
 
   // Sort the array based on the defined priority order
   const rearrangedArray = subjectsArray.sort((a, b) => {
-    // Convert subject names to lowercase for case-insensitive comparison
     const aSubject = a.subject.toLowerCase();
     const bSubject = b.subject.toLowerCase();
 
@@ -270,17 +243,13 @@ export function rearrangeSubjects(subjectsArray) {
     const bIndex = priorityOrder.indexOf(bSubject);
 
     if (aIndex === -1 && bIndex === -1) {
-      // If neither subject is in the priority list, keep original order
-      return 0;
+      return 0; // Keep original order if neither is in the list
     } else if (aIndex === -1) {
-      // If 'a' is not in priority list, it should come after 'b'
-      return 1;
+      return 1; // 'a' (not in list) comes after 'b' (in list)
     } else if (bIndex === -1) {
-      // If 'b' is not in priority list, it should come after 'a'
-      return -1;
+      return -1; // 'b' (not in list) comes after 'a' (in list)
     } else {
-      // Otherwise, compare based on their priority order
-      return aIndex - bIndex;
+      return aIndex - bIndex; // Compare based on their priority index
     }
   });
 
@@ -323,7 +292,6 @@ export function getStudentPerformanceComment(average) {
   }
   return "No performance data available.";
 }
-
 //ONLY FOR THIRD TERM
 // export function getStudentPerformanceComment(average) {
 //   // Convert to number
