@@ -566,4 +566,3 @@ async function TranscribeScores(
 }
 
 export default TranscribeScores;
-// AIzaSyBSlRHuRcsp9pzDNYTWqgTF6K_AWE-7UBk
