@@ -101,10 +101,10 @@ function Header() {
             <Link to={"/login"}>
               <button className="btn-small-screen">Login</button>
             </Link>
-{/* 
+
             <Link to={"student-portal"}>
               <button className="btn-small-screen">Portal</button>
-            </Link> */}
+            </Link> 
           </div>
         </div>
         <div className="overlay" data-nav-toggler="" data-overlay="" />
