@@ -1,24 +1,3 @@
-// export function addRemarksToResult(grade) {
-//   if (grade >= 70) return "EXCELLENT";
-//   if (grade >= 60) return "V.GOOD";
-//   if (grade >= 50) return "GOOD";
-//   if (grade >= 40) return "FAIR";
-//   return "FAIL";
-// }
-
-//SECONDARY GRADE FUNCTION
-// export function addGradeToResult(grade) {
-//   let addRemarksToResult;
-
-//   if (grade <= 30) addRemarksToResult = "D";
-//   if (grade >= 30 && grade <= 50) addRemarksToResult = "C";
-//   if (grade >= 50 && grade <= 70) addRemarksToResult = "B";
-//   if (grade >= 70) addRemarksToResult = "A";
-//   return addRemarksToResult;
-// }
-
-//PRIMARY GRADE FUNCTION
-
 export function addRemarksToResult(grade) {
   if (grade >= 70) return "EXCELLENT";
   if (grade >= 60 && grade <= 69) return "V. GOOD";
@@ -41,7 +20,6 @@ export function addGradeToResult(grade) {
 export function generateReportSummary(reports) {
   const reportSummary = {};
 
-  // Define mappings
   const valueMappings = {
     0: "GOOD",
     1: "POOR",
@@ -51,13 +29,11 @@ export function generateReportSummary(reports) {
     5: "EXCELLENT",
   };
 
-  // Loop through the reports
   for (let i = 0; i < reports.length; i++) {
     const report = reports[i];
     const reportName = report.report;
     const reportValue = report.value;
 
-    // Check if the report value exists in the mappings
     if (typeof reportValue === "number") {
       if (reportName !== "absent" && reportName !== "present") {
         if (valueMappings[reportValue]) {
@@ -67,7 +43,6 @@ export function generateReportSummary(reports) {
         reportSummary[reportName] = reportValue;
       }
     } else {
-      // If it's a string, assign it directly
       reportSummary[reportName] = reportValue;
     }
   }
@@ -81,7 +56,6 @@ function calculateTotalScore(examScores) {
     const scores = examScores[subject];
     for (const scoreType in scores) {
       if (scoreType !== "total") {
-        // Avoid including 'total' in the sum
         totalScore += scores[scoreType];
       }
     }
@@ -96,13 +70,12 @@ function calculateAverageMark(examScores) {
     const scores = examScores[subject];
     for (const scoreType in scores) {
       if (scoreType !== "total") {
-        // Avoid including 'total' in the average calculation
         totalScore += scores[scoreType];
         scoreCount++;
       }
     }
   }
-  if (scoreCount === 0) return 0; // Avoid division by zero
+  if (scoreCount === 0) return 0;
   return totalScore / scoreCount;
 }
 
@@ -110,12 +83,10 @@ function getPositionString(position) {
   const lastTwoDigits = position % 100;
   const lastDigit = position % 10;
 
-  // Special case for 11th, 12th, 13th
   if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
     return position + "th";
   }
 
-  // General case for other positions
   const suffixes = { 1: "st", 2: "nd", 3: "rd" };
   const suffix = suffixes[lastDigit] || "th";
 
@@ -129,7 +100,7 @@ export function assignScores(students, term) {
     if (!student.examScores || !student.examScores[term]) {
       console.warn(`Invalid exam scores for student: ${student.name}`);
       student.totalScore = 0;
-      student.averageMark = "0.00";
+      student.averageMark = 0;
       return;
     }
 
@@ -148,39 +119,39 @@ export function assignScores(students, term) {
       scores.total = total;
     }
 
-    // Calculate total and average scores
+    // Calculate total score
     const totalScore = calculateTotalScore(student.examScores[term]) || 0;
     student.totalScore = totalScore;
 
-    // Calculate averageMark by dividing the totalScore by the number of subjects
-    const numberOfSubjects = Object.keys(student.examScores[term]).length || 1; // Prevent division by 0
-    const averageMark = totalScore / numberOfSubjects;
+    // Calculate averageMark by dividing totalScore by number of subjects
+    const numberOfSubjects = Object.keys(student.examScores[term]).length || 1;
+    const averageMark = parseFloat((totalScore / numberOfSubjects).toFixed(2));
 
-    student.averageMark = averageMark.toFixed(2);
+    student.averageMark = averageMark; // stored as a number, not a string
   });
 
-  // Sort students by total score
+  // Sort students by averageMark (highest to lowest)
   const sortedStudents = students
     .slice()
-    .sort((a, b) => b.totalScore - a.totalScore);
+    .sort((a, b) => b.averageMark - a.averageMark);
 
-  // Assign positions with tie handling
+  // Assign positions with tie handling based on averageMark
   let currentPosition = 0;
-  let previousScore = null;
+  let previousAverage = null;
   let tieCount = 0;
 
-  sortedStudents.forEach((student, index) => {
-    if (student.totalScore === previousScore) {
-      // If scores are the same, share the position
+  sortedStudents.forEach((student) => {
+    if (student.averageMark === previousAverage) {
+      // Same average — share the position
       tieCount++;
     } else {
-      // New score, calculate the actual position
+      // New average — advance position
       currentPosition += tieCount + 1;
       tieCount = 0;
     }
 
     student.position = getPositionString(currentPosition);
-    previousScore = student.totalScore;
+    previousAverage = student.averageMark;
   });
 
   return sortedStudents;
@@ -188,26 +159,23 @@ export function assignScores(students, term) {
 
 export function convertClassNames(classNames) {
   const formattedNames = classNames.map((className) => {
-    // Split the class name by uppercase letters or digits
     const words = className.match(/[A-Z]+|[0-9]+/g);
 
-    // If there are words, format them as required
     if (words) {
       return words
         .map((word) => {
-          // Convert the first character to uppercase and the rest to lowercase
           return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
         })
-        .join(" "); // Join the words with a space
+        .join(" ");
     } else {
-      return className; // Return the original className if no words are found
+      return className;
     }
   });
 
-  return formattedNames.join(" and "); // Join the formatted names with 'and'
+  return formattedNames.join(" and ");
 }
+
 export function rearrangeSubjects(subjectsArray) {
-  // Define a priority order for subjects (all lowercase)
   const priorityOrder = [
     "mathematics",
     "english studies",
@@ -230,89 +198,44 @@ export function rearrangeSubjects(subjectsArray) {
     "phonics",
   ];
 
-  // Sort the array based on the defined priority order
   const rearrangedArray = subjectsArray.sort((a, b) => {
-    // Convert subject names to lowercase for case-insensitive comparison
     const aSubject = a.subject.toLowerCase();
     const bSubject = b.subject.toLowerCase();
 
     const aIndex = priorityOrder.indexOf(aSubject);
     const bIndex = priorityOrder.indexOf(bSubject);
 
-    if (aIndex === -1 && bIndex === -1) {
-      // If neither subject is in the priority list, keep original order
-      return 0;
-    } else if (aIndex === -1) {
-      // If 'a' is not in priority list, it should come after 'b'
-      return 1;
-    } else if (bIndex === -1) {
-      // If 'b' is not in priority list, it should come after 'a'
-      return -1;
-    } else {
-      // Otherwise, compare based on their priority order
-      return aIndex - bIndex;
-    }
+    if (aIndex === -1 && bIndex === -1) return 0;
+    else if (aIndex === -1) return 1;
+    else if (bIndex === -1) return -1;
+    else return aIndex - bIndex;
   });
 
   return rearrangedArray;
 }
 
-// USE THIS ONE IF NOT THIRD TERM
 export function getStudentPerformanceComment(average) {
-  // Convert to number and round to two decimal places
-  average = +average; // Force conversion to number
+  average = +average;
   if (isNaN(average)) {
     return "Invalid input. Please provide a valid number.";
   }
 
-  // Round to two decimal places
   const roundedAverage = Math.round(average * 100) / 100;
 
-  // Check the condition boundaries
   if (roundedAverage >= 80 && roundedAverage <= 100) {
-    console.log("Condition 1: Remarkable and Excellent result");
     return "A Remarkable and Excellent result. Keep it up.";
   } else if (roundedAverage >= 70 && roundedAverage < 80) {
-    console.log("Condition 2: Outstanding Performance");
     return "An Outstanding Performance. Keep it up.";
   } else if (roundedAverage >= 60 && roundedAverage < 70) {
-    console.log("Condition 3: Brilliant Performance");
     return "A brilliant performance. Keep it up.";
   } else if (roundedAverage >= 50 && roundedAverage < 60) {
-    console.log("Condition 4: Very Good Result");
     return "A Very Good Result.";
   } else if (roundedAverage >= 40 && roundedAverage < 50) {
-    console.log("Condition 5: Pass");
     return "Pass. Put more effort next term.";
   } else if (roundedAverage >= 20 && roundedAverage < 40) {
-    console.log("Condition 6: Poor Performance");
     return "Poor Performance. Put more effort next term.";
   } else if (roundedAverage < 20) {
-    console.log("Condition 7: Very Poor Performance");
     return "Very Poor Performance. Put more effort next term.";
   }
   return "No performance data available.";
 }
-
-//ONLY FOR THIRD TERM
-// export function getStudentPerformanceComment(average) {
-//   // Convert to number
-//   average = +average;
-
-//   // Handle invalid input
-//   if (isNaN(average)) {
-//     return "Invalid input. Please provide a valid number.";
-//   }
-
-//   // Round to two decimal places
-//   const roundedAverage = Math.round(average * 100) / 100;
-
-//   // Determine performance status
-//   if (roundedAverage >= 40) {
-//     console.log("Promoted");
-//     return "Promoted to the Next class";
-//   } else {
-//     console.log("Failed");
-//     return "Failed";
-//   }
-// }
