@@ -268,6 +268,12 @@ const Td = styled.td`
   &.lo {
     color: #9b1212;
   }
+  &.na {
+    color: #bbb;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
 `;
 
 const Tr = styled.tr`
@@ -351,18 +357,18 @@ const EmptyTitle = styled.h2`
   font-weight: 800;
 `;
 
-function calcTotal(subjectScores) {
-  return Object.values(subjectScores).reduce(
-    (sum, { firstTest = 0, secondTest = 0, exam = 0 }) =>
-      sum + firstTest + secondTest + exam,
-    0
-  );
-}
-
 function scoreClass(score) {
   if (score >= 75) return "hi";
   if (score >= 50) return "mid";
   return "lo";
+}
+
+function getPositionString(position) {
+  const lastTwoDigits = position % 100;
+  const lastDigit = position % 10;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) return position + "th";
+  const suffixes = { 1: "st", 2: "nd", 3: "rd" };
+  return position + (suffixes[lastDigit] || "th");
 }
 
 /* ─── COMPONENT ──────────────────────────────────────────── */
@@ -392,32 +398,65 @@ function BroadSheet() {
 
   if (isLoading) return <Spinner size="medium" />;
 
-  /* Build rows */
-  const rows = data
-    .map((student) => {
-      const termScores = student.examScores?.[term] ?? {};
-      const total = calcTotal(termScores);
-      const subjects = Object.keys(termScores);
-      const avg = subjects.length ? (total / subjects.length).toFixed(1) : "—";
-      return {
-        id: student.id,
-        name: student.name,
-        gender: student.gender,
-        termScores,
-        total,
-        avg,
-      };
-    })
-    .sort((a, b) => b.total - a.total)
-    .map((s, i) => ({ ...s, position: i + 1 }));
+  // Collect ALL unique subjects across every student
+  const allSubjects = [
+    ...new Set(
+      data.flatMap((student) =>
+        Object.keys(student.examScores?.[term] ?? {})
+      )
+    ),
+  ];
 
-  const allSubjects = rows.length ? Object.keys(rows[0].termScores) : [];
-  const highestTotal = rows.length ? rows[0].total : 0;
-  const classAvg = rows.length
-    ? (
-        rows.reduce((s, r) => s + parseFloat(r.avg || 0), 0) / rows.length
-      ).toFixed(1)
+  // Build rows
+  const rows = data.map((student) => {
+    const termScores = student.examScores?.[term] ?? {};
+
+    // Only count subjects the student actually offers (score > 0 or key exists)
+    const offeredSubjects = Object.keys(termScores);
+    const total = offeredSubjects.reduce((sum, subject) => {
+      const sc = termScores[subject] ?? {};
+      return sum + (sc.firstTest || 0) + (sc.secondTest || 0) + (sc.exam || 0);
+    }, 0);
+
+    const avg = offeredSubjects.length
+      ? parseFloat((total / offeredSubjects.length).toFixed(2))
+      : 0;
+
+    return {
+      id: student.id,
+      name: student.name,
+      gender: student.gender,
+      termScores,
+      offeredSubjects,
+      total,
+      avg,
+    };
+  });
+
+  // Sort by average (highest first) then assign positions with tie handling
+  const sortedRows = rows.slice().sort((a, b) => b.avg - a.avg);
+
+  let currentPosition = 0;
+  let previousAvg = null;
+  let tieCount = 0;
+
+  sortedRows.forEach((student) => {
+    if (student.avg === previousAvg) {
+      tieCount++;
+    } else {
+      currentPosition += tieCount + 1;
+      tieCount = 0;
+    }
+    student.positionNum = currentPosition; // numeric for gold/silver/bronze styling
+    student.position = getPositionString(currentPosition);
+    previousAvg = student.avg;
+  });
+
+  const highestAvg = sortedRows.length ? sortedRows[0].avg : 0;
+  const classAvg = sortedRows.length
+    ? (sortedRows.reduce((s, r) => s + r.avg, 0) / sortedRows.length).toFixed(1)
     : "—";
+
   const today = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
@@ -428,12 +467,10 @@ function BroadSheet() {
     <PageWrap>
       <PrintStyles />
 
-      {/* Print Button */}
       <PrintBtn className="no-print" onClick={() => window.print()}>
         🖨 Print / Save as PDF
       </PrintBtn>
 
-      {/* Sheet */}
       <Sheet id="broadsheet-root">
         <GoldBar />
 
@@ -461,7 +498,6 @@ function BroadSheet() {
         <TableWrap>
           <Table>
             <thead>
-              {/* Group label row */}
               <tr>
                 <ThGroup colSpan={3} />
                 {allSubjects.map((s) => (
@@ -469,17 +505,13 @@ function BroadSheet() {
                 ))}
                 <ThGroup colSpan={3}>Summary</ThGroup>
               </tr>
-              {/* Column names */}
               <tr>
                 <Th className="sn">S/N</Th>
                 <Th className="name">Student Name</Th>
                 <Th className="gen">Sex</Th>
                 {allSubjects.map((s) => (
                   <Th key={s}>
-                    {s
-                      .split(" ")
-                      .map((w) => w[0])
-                      .join(".")}
+                    {s.split(" ").map((w) => w[0]).join(".")}
                   </Th>
                 ))}
                 <Th className="total">Total</Th>
@@ -488,7 +520,7 @@ function BroadSheet() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((student, idx) => {
+              {sortedRows.map((student, idx) => {
                 const alt = idx % 2 === 1;
                 return (
                   <Tr key={student.id}>
@@ -502,6 +534,14 @@ function BroadSheet() {
                       {student.gender}
                     </Td>
                     {allSubjects.map((subject) => {
+                      // Student doesn't offer this subject
+                      if (!student.offeredSubjects.includes(subject)) {
+                        return (
+                          <Td key={subject} className="na" $alt={alt}>
+                            —
+                          </Td>
+                        );
+                      }
                       const sc = student.termScores[subject] ?? {};
                       const total =
                         (sc.firstTest || 0) +
@@ -521,9 +561,13 @@ function BroadSheet() {
                       {student.total}
                     </Td>
                     <Td className="avg" $alt={alt}>
-                      {student.avg}
+                      {student.avg.toFixed(1)}
                     </Td>
-                    <Td className="pos" $pos={student.position} $alt={alt}>
+                    <Td
+                      className="pos"
+                      $pos={student.positionNum}
+                      $alt={alt}
+                    >
                       {student.position}
                     </Td>
                   </Tr>
@@ -536,7 +580,7 @@ function BroadSheet() {
         {/* FOOTER */}
         <Footer>
           <Stat>
-            <StatVal>{rows.length}</StatVal>
+            <StatVal>{sortedRows.length}</StatVal>
             <StatLbl>Students</StatLbl>
           </Stat>
           <FDiv />
@@ -546,8 +590,8 @@ function BroadSheet() {
           </Stat>
           <FDiv />
           <Stat>
-            <StatVal>{highestTotal}</StatVal>
-            <StatLbl>Highest Score</StatLbl>
+            <StatVal>{highestAvg}</StatVal>
+            <StatLbl>Highest Avg</StatLbl>
           </Stat>
           <FDiv />
           <Stat>
