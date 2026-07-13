@@ -138,7 +138,7 @@ function ScoreForm({ formData, onInputChange }) {
         <br />
         <Input defaultValue={remarks} onChange={onInputChange} name="remarks" />
       </div>
-      <div>
+      {/* <div>
         <Label>Principal Remarks</Label>
         <br />
         <Input
@@ -146,7 +146,7 @@ function ScoreForm({ formData, onInputChange }) {
           value={principalRemarks}
           name="principalRemarks"
         />
-      </div>
+      </div> */}
     </StyledMangeMarksForm>
   );
 }

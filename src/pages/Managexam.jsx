@@ -27,7 +27,6 @@ const StyledManagexam = styled.div`
   min-height: calc(100vh - 60px);
   padding: 2rem;
 
-
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -60,7 +59,8 @@ const StyledManagexamBody = styled.div`
   background: white;
   padding: 3rem;
   border-radius: 20px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(10px);
@@ -402,7 +402,7 @@ function SelectionBox() {
   function handleManualMarks() {
     setShowModal(false);
     navigate(
-      `/review-score?class=${selectedClass}&subject=${selectedSubject}&term=${term}`
+      `/review-score?class=${selectedClass}&subject=${selectedSubject}&term=${term}`,
     );
   }
 
@@ -452,7 +452,7 @@ function SelectionBox() {
       const studentData = await ManageClassAndSubjectScores(
         selectedClass,
         selectedSubject,
-        term
+        term,
       );
 
       if (!studentData || studentData.length === 0) {
@@ -463,7 +463,7 @@ function SelectionBox() {
       const processedResults = await TranscribeScores(
         selectedFile,
         studentData,
-        selectedSubject
+        selectedSubject,
       );
 
       if (!processedResults || processedResults.length === 0) {
@@ -480,7 +480,7 @@ function SelectionBox() {
       toast.success("Image processed and scores saved successfully!");
       setShowUploadModal(false);
       navigate(
-        `/review-score?class=${selectedClass}&subject=${selectedSubject}&term=${term}`
+        `/review-score?class=${selectedClass}&subject=${selectedSubject}&term=${term}`,
       );
     } catch (error) {
       console.error("Error processing image:", error);
@@ -615,9 +615,9 @@ function SelectionBox() {
               marks, or manually enter marks yourself?
             </p>
             <ModalButtonGroup>
-              <SecondaryButton onClick={handleAIMarks}>
+              {/* <SecondaryButton onClick={handleAIMarks}>
                 <FaRobot /> Use AI Auto-Fill
-              </SecondaryButton>
+              </SecondaryButton> */}
               <PrimaryButton onClick={handleManualMarks}>
                 <FaEdit /> Manual Entry
               </PrimaryButton>
