@@ -27,7 +27,7 @@ function ScoreForm({ formData, onInputChange }) {
   );
   const [creativity, setCreativity] = useState(reports?.creativity || 0);
   const [present, setPresent] = useState(reports?.present || 0);
-  const [absent, setAbsent] = useState(110 - (reports?.present || 0));
+  const [absent, setAbsent] = useState(122 - (reports?.present || 0));
   const [remarks, setRemarks] = useState(reports?.remarks || "");
   const [principalRemarks, setPrincipalRemark] = useState(
     reports?.principalRemarks || ""
@@ -35,7 +35,7 @@ function ScoreForm({ formData, onInputChange }) {
 
   // Automatically update absent when present changes
   useEffect(() => {
-    const newAbsent = 110 - present;
+    const newAbsent = 122 - present;
     setAbsent(newAbsent);
     onInputChange({ target: { name: "absent", value: newAbsent } });
   }, [present]);
