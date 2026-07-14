@@ -213,6 +213,33 @@ export function rearrangeSubjects(subjectsArray) {
   return rearrangedArray;
 }
 
+// export function getStudentPerformanceComment(average) {
+//   average = +average;
+//   if (isNaN(average)) {
+//     return "Invalid input. Please provide a valid number.";
+//   }
+
+//   const roundedAverage = Math.round(average * 100) / 100;
+
+//   if (roundedAverage >= 80 && roundedAverage <= 100) {
+//     return "A Remarkable and Excellent result. Keep it up.";
+//   } else if (roundedAverage >= 70 && roundedAverage < 80) {
+//     return "An Outstanding Performance. Keep it up.";
+//   } else if (roundedAverage >= 60 && roundedAverage < 70) {
+//     return "A brilliant performance. Keep it up.";
+//   } else if (roundedAverage >= 50 && roundedAverage < 60) {
+//     return "A Very Good Result.";
+//   } else if (roundedAverage >= 40 && roundedAverage < 50) {
+//     return "Pass. Put more effort next term.";
+//   } else if (roundedAverage >= 20 && roundedAverage < 40) {
+//     return "Poor Performance. Put more effort next term.";
+//   } else if (roundedAverage < 20) {
+//     return "Very Poor Performance. Put more effort next term.";
+//   }
+//   return "No performance data available.";
+// }
+
+//Third term report comment
 export function getStudentPerformanceComment(average) {
   average = +average;
   if (isNaN(average)) {
@@ -222,19 +249,19 @@ export function getStudentPerformanceComment(average) {
   const roundedAverage = Math.round(average * 100) / 100;
 
   if (roundedAverage >= 80 && roundedAverage <= 100) {
-    return "A Remarkable and Excellent result. Keep it up.";
+    return "Promoted to the next class.";
   } else if (roundedAverage >= 70 && roundedAverage < 80) {
-    return "An Outstanding Performance. Keep it up.";
+    return "Promoted to the next class.";
   } else if (roundedAverage >= 60 && roundedAverage < 70) {
-    return "A brilliant performance. Keep it up.";
+    return "Promoted to the next class.";
   } else if (roundedAverage >= 50 && roundedAverage < 60) {
-    return "A Very Good Result.";
+    return "Promoted to the next class.";
   } else if (roundedAverage >= 40 && roundedAverage < 50) {
-    return "Pass. Put more effort next term.";
+    return "Promoted to the next class.";
   } else if (roundedAverage >= 20 && roundedAverage < 40) {
     return "Failed. He/She is to repeat the class.";
   } else if (roundedAverage < 20) {
-    return "Failed. He/She is to repeat the class";
+    return "Failed. Repeated";
   }
   return "No performance data available.";
 }
