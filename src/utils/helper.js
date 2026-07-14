@@ -7,7 +7,6 @@ export function addRemarksToResult(grade) {
   return "FAIL";
 }
 
-
 export function addGradeToResult(grade) {
   if (grade >= 70) return "A";
   if (grade >= 60 && grade <= 69) return "B";
@@ -233,9 +232,9 @@ export function getStudentPerformanceComment(average) {
   } else if (roundedAverage >= 40 && roundedAverage < 50) {
     return "Pass. Put more effort next term.";
   } else if (roundedAverage >= 20 && roundedAverage < 40) {
-    return "Poor Performance. Put more effort next term.";
+    return "Failed. He/She is to repeat the class.";
   } else if (roundedAverage < 20) {
-    return "Very Poor Performance. Put more effort next term.";
+    return "Failed. He/She is to repeat the class";
   }
   return "No performance data available.";
 }
