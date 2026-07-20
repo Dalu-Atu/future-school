@@ -615,9 +615,9 @@ function SelectionBox() {
               marks, or manually enter marks yourself?
             </p>
             <ModalButtonGroup>
-              {/* <SecondaryButton onClick={handleAIMarks}>
+              <SecondaryButton onClick={handleAIMarks}>
                 <FaRobot /> Use AI Auto-Fill
-              </SecondaryButton> */}
+              </SecondaryButton>
               <PrimaryButton onClick={handleManualMarks}>
                 <FaEdit /> Manual Entry
               </PrimaryButton>

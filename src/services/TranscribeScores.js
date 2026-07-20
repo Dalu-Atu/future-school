@@ -1,7 +1,6 @@
-
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
-const GEN_AI_MODEL = "gemini-pro-latest";
+const GEN_AI_MODEL = "gemini-3-flash-preview";
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -12,7 +11,7 @@ async function compressImageForBrowser(
   file,
   maxWidth = 2048,
   maxHeight = 2048,
-  quality = 0.85
+  quality = 0.85,
 ) {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement("canvas");
@@ -96,8 +95,8 @@ function fuzzyMatchName(aiName, studentData, usedOfficialNames) {
     const partialOverlap = aiWords.filter((aiW) =>
       dbWords.some(
         (dbW) =>
-          dbW.startsWith(aiW.slice(0, 4)) || aiW.startsWith(dbW.slice(0, 4))
-      )
+          dbW.startsWith(aiW.slice(0, 4)) || aiW.startsWith(dbW.slice(0, 4)),
+      ),
     ).length;
 
     // Strategy 3: Levenshtein distance on the full joined name
@@ -133,7 +132,7 @@ function levenshtein(a, b) {
   const m = a.length,
     n = b.length;
   const dp = Array.from({ length: m + 1 }, (_, i) =>
-    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)),
   );
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
@@ -154,7 +153,7 @@ async function TranscribeScores(
   studentData,
   subject,
   maxRetries = 3,
-  requestTimeout = 120000
+  requestTimeout = 120000,
 ) {
   console.log(`Starting transcription for subject: ${subject}`);
 
@@ -213,7 +212,7 @@ async function TranscribeScores(
         console.error("Image compression error:", e);
         return null;
       }
-    })
+    }),
   ).then((imgs) => imgs.filter(Boolean));
 
   if (validImages.length === 0) throw new Error("No valid images to process.");
@@ -258,8 +257,8 @@ Return one JSON object per student row found in the image.
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(
           () => reject(new Error(`Timeout after ${requestTimeout}ms`)),
-          requestTimeout
-        )
+          requestTimeout,
+        ),
       );
 
       const result = await Promise.race([apiCallPromise, timeoutPromise]);
@@ -288,11 +287,11 @@ Return one JSON object per student row found in the image.
           const fuzzy = fuzzyMatchName(
             rawOfficialName,
             studentData,
-            usedOfficialNames
+            usedOfficialNames,
           );
           if (fuzzy) {
             console.warn(
-              `🔁 FUZZY MATCH: AI said "${rawOfficialName}" → resolved to "${fuzzy.name}" for raw: "${row.raw_name}"`
+              `🔁 FUZZY MATCH: AI said "${rawOfficialName}" → resolved to "${fuzzy.name}" for raw: "${row.raw_name}"`,
             );
             dbStudent = fuzzy;
             matchMethod = "fuzzy";
@@ -305,11 +304,11 @@ Return one JSON object per student row found in the image.
           const fuzzy = fuzzyMatchName(
             row.raw_name,
             studentData,
-            usedOfficialNames
+            usedOfficialNames,
           );
           if (fuzzy) {
             console.warn(
-              `🔁 RAW FUZZY MATCH: raw "${row.raw_name}" → resolved to "${fuzzy.name}"`
+              `🔁 RAW FUZZY MATCH: raw "${row.raw_name}" → resolved to "${fuzzy.name}"`,
             );
             dbStudent = fuzzy;
             matchMethod = "raw-fuzzy";
@@ -320,11 +319,11 @@ Return one JSON object per student row found in the image.
         if (!dbStudent) {
           if (rawOfficialName) {
             console.warn(
-              `⚠️ NO MATCH: AI said "${rawOfficialName}" for raw: "${row.raw_name}" — skipped`
+              `⚠️ NO MATCH: AI said "${rawOfficialName}" for raw: "${row.raw_name}" — skipped`,
             );
           } else {
             console.warn(
-              `⚠️ NO MATCH: no name returned for raw: "${row.raw_name}" — skipped`
+              `⚠️ NO MATCH: no name returned for raw: "${row.raw_name}" — skipped`,
             );
           }
           unmatchedRows.push(row.raw_name || "(blank)");
@@ -336,7 +335,7 @@ Return one JSON object per student row found in the image.
         // Prevent duplicate assignment
         if (usedOfficialNames.has(officialName)) {
           console.warn(
-            `⚠️ DUPLICATE: "${officialName}" already assigned, skipping raw: "${row.raw_name}"`
+            `⚠️ DUPLICATE: "${officialName}" already assigned, skipping raw: "${row.raw_name}"`,
           );
           return;
         }
@@ -353,11 +352,11 @@ Return one JSON object per student row found in the image.
           matchMethod === "exact"
             ? "✅"
             : matchMethod === "fuzzy"
-            ? "🔁"
-            : "🔁~";
+              ? "🔁"
+              : "🔁~";
 
         console.log(
-          `${methodLabel} "${row.raw_name}" → "${officialName}" | 1st:${scores.firstTest} 2nd:${scores.secondTest} Ex:${scores.exam}`
+          `${methodLabel} "${row.raw_name}" → "${officialName}" | 1st:${scores.firstTest} 2nd:${scores.secondTest} Ex:${scores.exam}`,
         );
 
         scoresMap.set(officialName, scores);
@@ -377,13 +376,13 @@ Return one JSON object per student row found in the image.
       const unmatched = unmatchedRows.length;
 
       console.log(
-        `✅ Done! Matched ${matched}/${total} rows from sheet to DB.`
+        `✅ Done! Matched ${matched}/${total} rows from sheet to DB.`,
       );
       if (unmatched > 0) {
         console.warn(
           `⚠️ ${unmatched} rows could not be matched:\n  ${unmatchedRows.join(
-            "\n  "
-          )}`
+            "\n  ",
+          )}`,
         );
       }
 
@@ -394,7 +393,7 @@ Return one JSON object per student row found in the image.
 
       console.error(
         `❌ Attempt ${attempt}/${maxRetries} failed:`,
-        isTimeout ? "Timeout/Gateway error" : error.message
+        isTimeout ? "Timeout/Gateway error" : error.message,
       );
 
       if (attempt < maxRetries) {
@@ -408,7 +407,7 @@ Return one JSON object per student row found in the image.
   throw new Error(
     `Failed after ${maxRetries} attempts. Last error: ${
       lastError?.message || "Unknown error"
-    }`
+    }`,
   );
 }
 

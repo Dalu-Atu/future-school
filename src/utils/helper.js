@@ -249,19 +249,19 @@ export function getStudentPerformanceComment(average) {
   const roundedAverage = Math.round(average * 100) / 100;
 
   if (roundedAverage >= 80 && roundedAverage <= 100) {
-    return "Promoted to the next class.";
+    return "Promoted to KG 3";
   } else if (roundedAverage >= 70 && roundedAverage < 80) {
-    return "Promoted to the next class.";
+    return "Promoted to KG 3";
   } else if (roundedAverage >= 60 && roundedAverage < 70) {
-    return "Promoted to the next class.";
+    return "Promoted to KG 3";
   } else if (roundedAverage >= 50 && roundedAverage < 60) {
-    return "Promoted to the next class.";
+    return "Promoted to KG 3";
   } else if (roundedAverage >= 40 && roundedAverage < 50) {
-    return "Promoted to the next class.";
+    return "Promoted to KG 3";
   } else if (roundedAverage >= 20 && roundedAverage < 40) {
-    return "Failed. He/She is to repeat the class.";
+    return "Failed. To Repeat PRIMARY 3.";
   } else if (roundedAverage < 20) {
-    return "Failed. Repeated";
+    return "Failed. To Repeat PRIMARY 3.";
   }
   return "No performance data available.";
 }

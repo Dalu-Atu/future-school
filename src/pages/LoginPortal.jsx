@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import background from "../assets/lab.jpeg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useLoginAdmin,
   useLoginStudent,
@@ -14,6 +14,199 @@ import { useAccessResult } from "../services/schoolStudents";
 import { getClassess } from "../services/schoolClasses";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../ui/Spinner";
+
+// ---- Result release control ----------------------------------------
+const RESULT_DATE = new Date("2026-07-24T10:00:00");
+
+function getTimeLeft() {
+  const diff = RESULT_DATE.getTime() - Date.now();
+  if (diff <= 0)
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, done: true };
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return { days, hours, minutes, seconds, done: false };
+}
+
+// ---- Countdown page styled-components --------------------------------
+const pulse = keyframes`
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+`;
+
+const CountdownWrapper = styled.div`
+  min-height: 100vh;
+  width: 100vw;
+  margin-top: -2rem;
+  margin-bottom: -3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      hsla(170, 90%, 25%, 0.35),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      hsla(45, 90%, 55%, 0.12),
+      transparent 40%
+    ),
+    linear-gradient(160deg, hsl(170, 65%, 8%) 0%, hsl(170, 90%, 5%) 100%);
+  color: white;
+`;
+
+const Card = styled.div`
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 34rem;
+  background: hsla(170, 40%, 20%, 0.25);
+  border: 1px solid hsla(170, 60%, 70%, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6);
+  padding: 3.5rem 3rem;
+  text-align: center;
+
+  @media (max-width: 560px) {
+    padding: 2.5rem 1.75rem;
+  }
+`;
+
+const Logo = styled.img`
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: contain;
+  margin: 0 auto 1.5rem;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+`;
+
+const Eyebrow = styled.p`
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsl(45, 90%, 65%);
+`;
+
+const Title = styled.h1`
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: white;
+`;
+
+const Subtitle = styled.p`
+  margin: 0 auto 2.5rem;
+  max-width: 26rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: hsla(0, 0%, 100%, 0.7);
+
+  strong {
+    color: white;
+    font-weight: 700;
+  }
+`;
+
+const TimerRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-bottom: 2.5rem;
+
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+  }
+`;
+
+const TimeBlockBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TimeValue = styled.div`
+  width: 4.5rem;
+  padding: 0.9rem 0;
+  border-radius: 12px;
+  background: hsla(0, 0%, 100%, 0.06);
+  border: 1px solid hsla(0, 0%, 100%, 0.12);
+  font-size: 1.65rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: white;
+
+  @media (max-width: 480px) {
+    width: 3.6rem;
+    font-size: 1.3rem;
+    padding: 0.7rem 0;
+  }
+`;
+
+const TimeLabel = styled.span`
+  margin-top: 0.6rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsla(0, 0%, 100%, 0.5);
+`;
+
+const StatusRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: hsla(0, 0%, 100%, 0.55);
+`;
+
+const StatusDot = styled.span`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: hsl(150, 70%, 55%);
+  animation: ${pulse} 1.8s ease-in-out infinite;
+`;
+
+const Divider = styled.div`
+  width: 3rem;
+  height: 2px;
+  margin: 0 auto 1.75rem;
+  background: hsl(45, 90%, 60%);
+  border-radius: 2px;
+`;
+
+const Footer = styled.p`
+  position: relative;
+  z-index: 1;
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: hsla(0, 0%, 100%, 0.3);
+`;
+
+function TimeBlock({ value, label }) {
+  return (
+    <TimeBlockBox>
+      <TimeValue>{String(value).padStart(2, "0")}</TimeValue>
+      <TimeLabel>{label}</TimeLabel>
+    </TimeBlockBox>
+  );
+}
+// ----------------------------------------------------------------------
 
 const StyledLogin = styled.div`
   display: flex;
@@ -132,9 +325,11 @@ const Slogan = styled.div`
   z-index: 2;
   margin-left: 5rem;
 `;
+
 function Login() {
   const [pin, setPin] = useState("");
   const [clsId, setClsId] = useState("");
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft());
   const { accessResult, isAccessingResult } = useAccessResult();
   const { images, schoolName } = useSettings();
 
@@ -143,12 +338,61 @@ function Login() {
     queryFn: getClassess,
   });
 
+  // Tick the countdown every second and flip over automatically once done
+  useEffect(() => {
+    const interval = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
     accessResult({ pin, clsId });
   }
 
+  const isResultDay = timeLeft.done;
+
   if (isLoading) return <Spinner />;
+
+  // ---- Not yet result day: show the countdown page ----
+  if (!isResultDay) {
+    return (
+      <CountdownWrapper>
+        <Card>
+          {images?.logo && <Logo src={images.logo} alt="logo" />}
+
+          <Eyebrow>
+            {schoolName ? schoolName.toUpperCase() : "SCHOOL PORTAL"}
+          </Eyebrow>
+          <Title>Results aren&apos;t out yet</Title>
+          <Divider />
+          <Subtitle>
+            Sit tight — results will be available on{" "}
+            <strong>24th July 2026</strong>. Check back then to access your
+            results.
+          </Subtitle>
+
+          <TimerRow>
+            <TimeBlock value={timeLeft.days} label="Days" />
+            <TimeBlock value={timeLeft.hours} label="Hrs" />
+            <TimeBlock value={timeLeft.minutes} label="Min" />
+            <TimeBlock value={timeLeft.seconds} label="Sec" />
+          </TimerRow>
+
+          <StatusRow>
+            <StatusDot />
+            We&apos;ll be ready for you soon
+          </StatusRow>
+        </Card>
+
+        <Footer>
+          &copy; {new Date().getFullYear()} {schoolName || "School"}. All rights
+          reserved.
+        </Footer>
+      </CountdownWrapper>
+    );
+  }
+
+  // ---- Result day has arrived: show the existing login form ----
   return (
     <StyledLogin className="contain">
       <FormContainer className="login-container">
