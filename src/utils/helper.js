@@ -239,7 +239,33 @@ export function rearrangeSubjects(subjectsArray) {
 //   return "No performance data available.";
 // }
 
-//Third term report comment
+//Third term report comment junior
+// export function getStudentPerformanceComment(average) {
+//   average = +average;
+//   if (isNaN(average)) {
+//     return "Invalid input. Please provide a valid number.";
+//   }
+
+//   const roundedAverage = Math.round(average * 100) / 100;
+
+//   if (roundedAverage >= 80 && roundedAverage <= 100) {
+//     return "Promoted to KG 3";
+//   } else if (roundedAverage >= 70 && roundedAverage < 80) {
+//     return "Promoted to KG 3";
+//   } else if (roundedAverage >= 60 && roundedAverage < 70) {
+//     return "Promoted to KG 3";
+//   } else if (roundedAverage >= 50 && roundedAverage < 60) {
+//     return "Promoted to KG 3";
+//   } else if (roundedAverage >= 40 && roundedAverage < 50) {
+//     return "Promoted to KG 3";
+//   } else if (roundedAverage >= 20 && roundedAverage < 40) {
+//     return "Failed. To Repeat PRIMARY 3.";
+//   } else if (roundedAverage < 20) {
+//     return "Failed. To Repeat PRIMARY 3.";
+//   }
+//   return "No performance data available.";
+// }
+
 export function getStudentPerformanceComment(average) {
   average = +average;
   if (isNaN(average)) {
@@ -249,19 +275,19 @@ export function getStudentPerformanceComment(average) {
   const roundedAverage = Math.round(average * 100) / 100;
 
   if (roundedAverage >= 80 && roundedAverage <= 100) {
-    return "Promoted to KG 3";
+    return "Promoted to Next Class";
   } else if (roundedAverage >= 70 && roundedAverage < 80) {
-    return "Promoted to KG 3";
+    return "Promoted to Next Class";
   } else if (roundedAverage >= 60 && roundedAverage < 70) {
-    return "Promoted to KG 3";
+    return "Promoted to Next Class";
   } else if (roundedAverage >= 50 && roundedAverage < 60) {
-    return "Promoted to KG 3";
+    return "Promoted to Next Class";
   } else if (roundedAverage >= 40 && roundedAverage < 50) {
-    return "Promoted to KG 3";
+    return "Promoted to Next Class";
   } else if (roundedAverage >= 20 && roundedAverage < 40) {
-    return "Failed. To Repeat PRIMARY 3.";
+    return "Failed. To Repeat the current class";
   } else if (roundedAverage < 20) {
-    return "Failed. To Repeat PRIMARY 3.";
+    return "Failed. To Repeat the current class";
   }
-  return "No performance data available.";
+  return "To Repeat the current class";
 }
