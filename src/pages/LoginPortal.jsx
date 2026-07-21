@@ -68,7 +68,7 @@ const Card = styled.div`
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 34rem;
+  max-width: 36rem;
   background: hsla(170, 40%, 20%, 0.25);
   border: 1px solid hsla(170, 60%, 70%, 0.15);
   border-radius: 20px;
@@ -93,7 +93,7 @@ const Logo = styled.img`
 
 const Eyebrow = styled.p`
   margin: 0 0 0.75rem;
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -111,7 +111,7 @@ const Title = styled.h1`
 const Subtitle = styled.p`
   margin: 0 auto 2.5rem;
   max-width: 26rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
   color: hsla(0, 0%, 100%, 0.7);
 
@@ -367,7 +367,7 @@ function Login() {
           <Divider />
           <Subtitle>
             Sit tight — results will be available on{" "}
-            <strong>24th July 2026</strong>. Check back then to access your
+            <strong>24th July 2026 (10am)</strong>. Check back then to access your
             results.
           </Subtitle>
 
