@@ -285,9 +285,9 @@ export function getStudentPerformanceComment(average) {
   } else if (roundedAverage >= 40 && roundedAverage < 50) {
     return "Promoted to Next Class";
   } else if (roundedAverage >= 20 && roundedAverage < 40) {
-    return "Failed. To Repeat the current class";
+    return "Failed. Not Promoted";
   } else if (roundedAverage < 20) {
-    return "Failed. To Repeat the current class";
+    return "Failed. Not Promoted";
   }
-  return "To Repeat the current class";
+  return "Not Promoted";
 }
