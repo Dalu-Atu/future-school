@@ -33,6 +33,31 @@ function ScoreForm({ formData, onInputChange }) {
     reports?.principalRemarks || ""
   );
 
+    function calculateCumulativeAverage(examScores) {
+      if (!examScores) return 0;
+
+      const terms = Object.keys(examScores);
+      let totalMarksAllTerms = 0;
+      let totalSubjectsAllTerms = 0;
+
+      terms.forEach((termKey) => {
+        const termScores = examScores[termKey];
+        Object.values(termScores).forEach((scores) => {
+          const subjectTotal =
+            (scores.firstTest || 0) +
+            (scores.secondTest || 0) +
+            (scores.exam || 0);
+          if (subjectTotal > 0) {
+            totalMarksAllTerms += subjectTotal;
+            totalSubjectsAllTerms++;
+          }
+        });
+      });
+
+      return totalSubjectsAllTerms > 0
+        ? Number((totalMarksAllTerms / totalSubjectsAllTerms).toFixed(2))
+        : 0;
+    }
   // Automatically update absent when present changes
   useEffect(() => {
     const newAbsent = 122 - present;
@@ -40,11 +65,14 @@ function ScoreForm({ formData, onInputChange }) {
     onInputChange({ target: { name: "absent", value: newAbsent } });
   }, [present]);
 
-  useEffect(() => {
-    const comment = getStudentPerformanceComment(formData.averageMark);
-    setPrincipalRemark(comment);
-    onInputChange({ target: { name: "principalRemarks", value: comment } });
-  }, []);
+useEffect(() => {
+  const cumulativeAverage = calculateCumulativeAverage(formData.examScores);
+  const comment = getStudentPerformanceComment(cumulativeAverage);
+  setPrincipalRemark(comment);
+  onInputChange({ target: { name: "principalRemarks", value: comment } });
+}, []);
+
+
 
   return (
     <StyledMangeMarksForm>

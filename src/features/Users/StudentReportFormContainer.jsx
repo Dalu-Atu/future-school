@@ -107,15 +107,14 @@ function ScoreFormContainer({ selectedClass }) {
         navigate(-1);
       },
       onError: (err) => toast.err(err.message),
-    }
+    },
   );
-  console.log(studentToBeScored);
 
   useEffect(() => {
     if (studentToBeScored?.length > 1) {
       const studentsReportAndAverage = assignScores(
         studentToBeScored,
-        selectedTerm
+        selectedTerm,
       );
 
       const students = studentsReportAndAverage
@@ -124,6 +123,7 @@ function ScoreFormContainer({ selectedClass }) {
           reports: std.reports,
           image: std.image,
           averageMark: std.averageMark,
+          examScores: std.examScores, // needed for cumulative average in ScoreForm
         }))
         .sort((a, b) => a.name.localeCompare(b.name));
 
@@ -148,7 +148,7 @@ function ScoreFormContainer({ selectedClass }) {
     const { name, value } = e.target;
     let updatedStudentsData = [...studentsData];
     const index = updatedStudentsData.findIndex(
-      (std) => std.name === studentName
+      (std) => std.name === studentName,
     );
 
     // If a student with the same name is found, update its data
@@ -157,6 +157,7 @@ function ScoreFormContainer({ selectedClass }) {
     }
     setStudentsData(updatedStudentsData);
   };
+  console.log(studentToBeScored);
 
   // if (isSavingScores) return <Spinner size="small" />;
   if (isGettingStd) return <Spinner size="small" />;
